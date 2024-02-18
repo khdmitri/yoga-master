@@ -6,14 +6,14 @@ import {useState} from "react";
 import Script from "next/script";
 
 function getTelegram(){
-    let w: any = null
+    let tg: any = null
     if (typeof window !== "undefined") {
         // Client-side-only code
-        w = window
+        const w: any = window
+        tg = w.Telegram.WebApp
         console.log("window=", w)
+        console.log("TG=", tg)
     }
-    const tg = w?.Telegram?.WebApp
-    console.log("TG=", tg)
 
     const onClose = () => {
         tg?.close()
