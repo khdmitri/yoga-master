@@ -3,14 +3,15 @@
 import {Box, Button, Container, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
 import Script from "next/script";
+import {setDefaultHighWaterMark} from "stream";
 
-function getTelegram(){
+function getTelegram(setW){
     let tg = null
     if (typeof window !== "undefined") {
         // Client-side-only code
-        const w = window
-        console.log("window=", w)
-        tg = w.Telegram?.WebApp
+        setW(window)
+        console.log("window=", window)
+        tg = window.Telegram?.WebApp
         console.log("TG=", tg)
     }
 
@@ -37,10 +38,11 @@ function getTelegram(){
 
 export default function Home() {
     const [tgObj, setTgObj] = useState({})
+    const [w, setW] = useState(null)
 
     useEffect(() => {
-        setTgObj(getTelegram())
-    }, [])
+        setTgObj(getTelegram(setW))
+    }, [w])
 
     const refreshTelegram = () => {
         setTgObj(getTelegram())
