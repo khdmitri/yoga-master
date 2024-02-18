@@ -48,7 +48,6 @@ export default function Home() {
 
     return (
         <Container>
-            <Script src="https://telegram.org/js/telegram-web-app.js" />
             <Box display="flex" flexDirection="column">
                 <Typography variant="h6">
                     <p>Username: {tgObj.user?.username}</p>
