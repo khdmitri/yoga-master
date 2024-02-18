@@ -1,5 +1,10 @@
 export default function useTelegram() {
-    const tg = window?.Telegram?.WebApp
+    let w = null
+    if (typeof window !== "undefined") {
+        // Client-side-only code
+        w = window
+    }
+    const tg = w?.Telegram?.WebApp
 
     const onClose = () => {
         tg?.close()
