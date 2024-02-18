@@ -10,8 +10,8 @@ function getTelegram(){
     if (typeof window !== "undefined") {
         // Client-side-only code
         const w: any = window
-        tg = w.Telegram.WebApp
         console.log("window=", w)
+        tg = w.Telegram?.WebApp
         console.log("TG=", tg)
     }
 
