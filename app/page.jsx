@@ -1,15 +1,14 @@
 "use client"
 
-import useTelegram from "./(hooks)/useTelegram";
 import {Box, Button, Container, Typography} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Script from "next/script";
 
 function getTelegram(){
-    let tg: any = null
+    let tg = null
     if (typeof window !== "undefined") {
         // Client-side-only code
-        const w: any = window
+        const w = window
         console.log("window=", w)
         tg = w.Telegram?.WebApp
         console.log("TG=", tg)
@@ -37,13 +36,14 @@ function getTelegram(){
 }
 
 export default function Home() {
-    let {user, onClose, onToggleButton} = getTelegram()
+    const [tgObj, setTgObj] = useState({})
+
+    useEffect(() => {
+        setTgObj(getTelegram())
+    }, [])
 
     const refreshTelegram = () => {
-        const tg = getTelegram()
-        user = tg.tg
-        onClose = tg.onClose
-        onToggleButton = tg.onToggleButton
+        setTgObj(getTelegram())
     }
 
     return (
@@ -51,15 +51,15 @@ export default function Home() {
             <Script src="https://telegram.org/js/telegram-web-app.js" />
             <Box display="flex" flexDirection="column">
                 <Typography variant="h6">
-                    <p>Username: {user?.username}</p>
-                    <p>First Name: {user?.first_name}</p>
-                    <p>Last Name: {user?.last_name}</p>
-                    <p>Is Premium: {user?.is_premium}</p>
+                    <p>Username: {tgObj.user?.username}</p>
+                    <p>First Name: {tgObj.user?.first_name}</p>
+                    <p>Last Name: {tgObj.user?.last_name}</p>
+                    <p>Is Premium: {tgObj.user?.is_premium}</p>
                 </Typography>
                 <Button onClick={refreshTelegram}>Refresh</Button>
             </Box>
-            <Button onClick={onToggleButton}>Toggle</Button>
-            <Button onClick={onClose}>Close Application</Button>
+            <Button onClick={tgObj.onToggleButton}>Toggle</Button>
+            <Button onClick={tgObj.onClose}>Close Application</Button>
         </Container>
     );
 }
