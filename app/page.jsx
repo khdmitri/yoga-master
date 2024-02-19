@@ -7,43 +7,6 @@ import YoutubeEmbed from "./_components/embed_youtube";
 import Box from "@mui/material/Box";
 import {WEBAPP_ACTIONS} from "../lib/constants";
 
-async function getTelegram() {
-    let tg = null
-    if (typeof window !== "undefined") {
-        // Client-side-only code
-        setW(window)
-        console.log("window=", window)
-        tg = window.Telegram?.WebApp
-        if (tg) {
-            tg.ready()
-            tg.onEvent('mainButtonClicked', onSendData)
-            tg.MainButton.show()
-        }
-        console.log("TG=", tg)
-    }
-
-    const onClose = () => {
-        tg?.close()
-    }
-
-    const onToggleButton = () => {
-        if (tg?.MainButton?.isVisible) {
-            tg?.MainButton?.hide()
-        } else {
-            tg?.MainButton?.show()
-        }
-    }
-
-
-    return {
-        tg,
-        onClose,
-        onToggleButton,
-        user: tg?.initDataUnsafe?.user,
-        query_id: tg?.initDataUnsafe?.query_id
-    }
-}
-
 function SellIcon() {
     return null;
 }
@@ -53,30 +16,34 @@ export default function Home() {
     const [orderId, setOrderId] = useState(-1)
     const [tg, setTg] = useState(null)
 
-    // const onSendData = useCallback(async () => {
-    //     const {user, query_id, onClose} = getTelegram()
-    //     if (orderId > 0 && query_id) {
-    //         await PractiseAPI.send_data_to_bot({
-    //             action: WEBAPP_ACTIONS.buy_practise,
-    //             order_id: orderId,
-    //             user_id: user?.id,
-    //             query_id: query_id
-    //         }).then(result => {
-    //             console.log("Result:", result)
-    //             onClose()
-    //         })
-    //     }
-    // }, [orderId])
+    const onSendData = useCallback(async () => {
+        if (orderId > 0 && tg?.query_id) {
+            await PractiseAPI.send_data_to_bot({
+                action: WEBAPP_ACTIONS.buy_practise,
+                order_id: orderId,
+                user_id: tg?.user?.id,
+                query_id: tg.query_id
+            }).then(result => {
+                console.log("Result:", result)
+                tg.close()
+            })
+        }
+    }, [orderId, tg])
+
     useEffect(() => {
         const tg = window.Telegram?.WebApp
         console.log("Telegram:", window.Telegram)
         if (tg) {
             tg.ready()
             tg.expand()
+            tg.onEvent('mainButtonClicked', onSendData)
         }
         console.log("TG=", tg)
         setTg(tg)
-    }, [window])
+        return () => {
+            tg.offEvent('mainButtonClicked', onSendData)
+        }
+    }, [])
 
     const getPractiseList = async () => {
         await PractiseAPI.get_practises().then(
@@ -91,7 +58,7 @@ export default function Home() {
     const orderAction = (order_id) => {
         console.log("Order ID:", order_id)
         setOrderId(order_id)
-        const mainButton = tgObj?.tg?.MainButton
+        const mainButton = tg?.MainButton
         if (mainButton) {
             mainButton.text = 'ПЕРЕЙТИ К ОПЛАТЕ'
             mainButton.show()

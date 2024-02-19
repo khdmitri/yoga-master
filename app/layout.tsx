@@ -31,7 +31,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-        <Script src="https://telegram.org/js/telegram-web-app.js"/>
+        <head>
+            <script src="https://telegram.org/js/telegram-web-app.js" async />
+        </head>
         <CssBaseline/>
         <body className={inter.className}>
         <ResponsiveAppBar/>
