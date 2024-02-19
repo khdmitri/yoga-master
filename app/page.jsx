@@ -6,6 +6,7 @@ import PractiseAPI from "../lib/practise";
 import YoutubeEmbed from "./_components/embed_youtube";
 import Box from "@mui/material/Box";
 import {WEBAPP_ACTIONS} from "../lib/constants";
+import {json} from "stream/consumers";
 
 async function getTelegram(setW, onSendData) {
     let tg = null
@@ -99,7 +100,7 @@ export default function Home() {
                     Курсы по йоге
                 </Typography>
                 <Typography variant="body2" color="primary.main">
-                    {tgObj}
+                    {JSON.stringify(tgObj)}
                 </Typography>
             </Box>
             <Grid container spacing={2} display="flex" justifyContent="center">
