@@ -90,7 +90,7 @@ export default function Home() {
 
     useEffect(() => {
         setTgObj(getTelegram(setW, onSendData))
-    }, [w])
+    }, [w, orderId, tgObj])
 
     return (
         <Container>
