@@ -79,7 +79,7 @@ export default function Home() {
 
     const orderAction = (order_id) => {
         setOrderId(order_id)
-        const mainButton = tgObj?.MainButton
+        const mainButton = tgObj?.tg?.MainButton
         if (mainButton) {
             mainButton.text = 'ПЕРЕЙТИ К ОПЛАТЕ'
             mainButton.show()
