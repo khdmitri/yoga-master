@@ -7,7 +7,7 @@ import YoutubeEmbed from "./_components/embed_youtube";
 import Box from "@mui/material/Box";
 import {WEBAPP_ACTIONS} from "../lib/constants";
 
-async function getTelegram(setW, onSendData) {
+async function getTelegram() {
     let tg = null
     if (typeof window !== "undefined") {
         // Client-side-only code
@@ -49,24 +49,33 @@ function SellIcon() {
 }
 
 export default function Home() {
-    const [tgObj, setTgObj] = useState(null)
-    const [w, setW] = useState(null)
     const [practiseList, setPractiseList] = useState(null)
     const [orderId, setOrderId] = useState(-1)
+    const [tg, setTg] = useState(null)
 
-    const onSendData = useCallback(async () => {
-        if (orderId > 0) {
-            await PractiseAPI.send_data_to_bot({
-                action: WEBAPP_ACTIONS.buy_practise,
-                order_id: orderId,
-                user_id: tgObj.user?.id,
-                query_id: tgObj?.query_id
-            }).then(result => {
-                console.log("Result:", result)
-                tgObj?.tg?.close()
-            })
+    // const onSendData = useCallback(async () => {
+    //     const {user, query_id, onClose} = getTelegram()
+    //     if (orderId > 0 && query_id) {
+    //         await PractiseAPI.send_data_to_bot({
+    //             action: WEBAPP_ACTIONS.buy_practise,
+    //             order_id: orderId,
+    //             user_id: user?.id,
+    //             query_id: query_id
+    //         }).then(result => {
+    //             console.log("Result:", result)
+    //             onClose()
+    //         })
+    //     }
+    // }, [orderId])
+    useEffect(() => {
+        const tg = window.Telegram?.WebApp
+        if (tg) {
+            tg.ready()
+            tg.expand()
         }
-    }, [orderId, tgObj])
+        console.log("TG=", tg)
+        setTg(tg)
+    }, [])
 
     const getPractiseList = async () => {
         await PractiseAPI.get_practises().then(
@@ -88,18 +97,16 @@ export default function Home() {
         }
     }
 
-    useEffect(() => {
-        setTgObj(getTelegram(setW, onSendData))
-    }, [w, orderId, tgObj])
-
     return (
         <Container>
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="h3" color="info.main">
                     Курсы по йоге
                 </Typography>
+            </Box>
+            <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
-                    {JSON.stringify(tgObj)}
+                    {JSON.stringify(tg)}
                 </Typography>
             </Box>
             <Grid container spacing={2} display="flex" justifyContent="center">
