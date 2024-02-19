@@ -6,7 +6,6 @@ import PractiseAPI from "../lib/practise";
 import YoutubeEmbed from "./_components/embed_youtube";
 import Box from "@mui/material/Box";
 import {WEBAPP_ACTIONS} from "../lib/constants";
-import {json} from "stream/consumers";
 
 async function getTelegram(setW, onSendData) {
     let tg = null
