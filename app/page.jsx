@@ -79,6 +79,7 @@ export default function Home() {
     }, [])
 
     const orderAction = (order_id) => {
+        console.log("Order ID:", order_id)
         setOrderId(order_id)
         const mainButton = tgObj?.tg?.MainButton
         if (mainButton) {
@@ -96,6 +97,9 @@ export default function Home() {
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="h3" color="info.main">
                     Курсы по йоге
+                </Typography>
+                <Typography variant="body2" color="primary.main">
+                    {tgObj}
                 </Typography>
             </Box>
             <Grid container spacing={2} display="flex" justifyContent="center">
