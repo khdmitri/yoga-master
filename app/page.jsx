@@ -69,6 +69,7 @@ export default function Home() {
     // }, [orderId])
     useEffect(() => {
         const tg = window.Telegram?.WebApp
+        console.log("Telegram:", window.Telegram)
         if (tg) {
             tg.ready()
             tg.expand()
