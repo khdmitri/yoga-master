@@ -76,7 +76,7 @@ export default function Home() {
         }
         console.log("TG=", tg)
         setTg(tg)
-    }, [])
+    }, [window])
 
     const getPractiseList = async () => {
         await PractiseAPI.get_practises().then(
