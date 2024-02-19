@@ -17,6 +17,7 @@ async function getTelegram(setW, onSendData) {
         if (tg) {
             tg.ready()
             tg.onEvent('mainButtonClicked', onSendData)
+            tg.MainButton.show()
         }
         console.log("TG=", tg)
     }
