@@ -1,11 +1,11 @@
 "use client"
 
-import {Box, Button, Container, Typography} from "@mui/material";
+import {Button, Card, CardActions, CardContent, Chip, Container, Grid, Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import Script from "next/script";
-import {setDefaultHighWaterMark} from "stream";
+import PractiseAPI from "../lib/practise";
+import YoutubeEmbed from "./_components/embed_youtube";
 
-function getTelegram(setW){
+function getTelegram(setW) {
     let tg = null
     if (typeof window !== "undefined") {
         // Client-side-only code
@@ -36,31 +36,58 @@ function getTelegram(setW){
     }
 }
 
+function SellIcon() {
+    return null;
+}
+
 export default function Home() {
     const [tgObj, setTgObj] = useState({})
     const [w, setW] = useState(null)
+    const [practiseList, setPractiseList] = useState(null)
+
+    const getPractiseList = async () => {
+        await PractiseAPI.get_practises().then(
+            result => setPractiseList(result)
+        ).catch(error => console.log(error))
+    }
+
+    useEffect(() => {
+        getPractiseList()
+    }, [])
 
     useEffect(() => {
         setTgObj(getTelegram(setW))
     }, [w])
 
-    const refreshTelegram = () => {
-        setTgObj(getTelegram())
-    }
-
     return (
         <Container>
-            <Box display="flex" flexDirection="column">
-                <Typography variant="h6">
-                    <p>Username: {tgObj.user?.username}</p>
-                    <p>First Name: {tgObj.user?.first_name}</p>
-                    <p>Last Name: {tgObj.user?.last_name}</p>
-                    <p>Is Premium: {tgObj.user?.is_premium}</p>
-                </Typography>
-                <Button onClick={refreshTelegram}>Refresh</Button>
-            </Box>
-            <Button onClick={tgObj.onToggleButton}>Toggle</Button>
-            <Button onClick={tgObj.onClose}>Close Application</Button>
+            <Grid container spacing={2} display="flex" justifyContent="center">
+                {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
+                    <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
+                        <Card sx={{maxWidth: 420}}>
+                            <YoutubeEmbed embedId={practise.file_resource_link}/>
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    {practise.title}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {practise.description}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Grid container spacing={2} display="flex" justifyContent="space-between">
+                                    <Grid item xs={12} display="flex" justifyContent="space-between">
+                                        <Button variant="contained" size="medium">
+                                            КУПИТЬ ЗА 1999 руб.
+                                        </Button>
+                                        <Chip icon={<SellIcon/>} label="20%" color="error"/>
+                                    </Grid>
+                                </Grid>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
         </Container>
     );
 }

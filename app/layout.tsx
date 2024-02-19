@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import ResponsiveAppBar from "./_components/app_bar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <Script src="https://telegram.org/js/telegram-web-app.js" />
       <body className={inter.className}>
+        <ResponsiveAppBar />
         {children}
       </body>
     </html>
