@@ -25,7 +25,7 @@ export default function Home() {
             user_id: tg?.initDataUnsafe?.user?.id
         }
         setSendData(data_to_send)
-        if (orderId > 0 && tg?.query_id) {
+        if (orderId > 0) {
             await PractiseAPI.send_data_to_bot(data_to_send).then(result => {
                 console.log("Result:", result)
                 tg.close()
@@ -33,7 +33,7 @@ export default function Home() {
                 setMsg(JSON.stringify(error))
             })
         }
-    }, [orderId, tg])
+    }, [tg])
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp
