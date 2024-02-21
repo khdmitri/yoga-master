@@ -13,7 +13,7 @@ function SellIcon() {
 
 export default function Home() {
     const [practiseList, setPractiseList] = useState(null)
-    const [sendData, setSendData] = useState({})
+    const [sendData, setSendData] = useState({action: -1, user_id: -1, order_id: -1})
     const [orderId, setOrderId] = useState(-1)
     const [tg, setTg] = useState(null)
     const [msg, setMsg] = useState(null)
@@ -23,7 +23,7 @@ export default function Home() {
             console.log("Result:", result)
             tg.close()
         }).catch(error => {
-            setMsg(JSON.stringify(error))
+            console.log(error)
         })
     }
 
