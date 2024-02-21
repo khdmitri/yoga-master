@@ -21,8 +21,7 @@ export default function Home() {
         const data_to_send = {
             action: WEBAPP_ACTIONS.buy_practise,
             order_id: orderId,
-            user_id: tg?.initDataUnsafe?.user?.id,
-            query_id: tg.initDataUnsafe?.query_id
+            user_id: tg?.initDataUnsafe?.user?.id
         }
         setSendData(data_to_send)
         if (orderId > 0 && tg?.query_id) {
@@ -81,6 +80,7 @@ export default function Home() {
                     User ID: {tg?.initDataUnsafe?.user?.id}
                     Query ID: {tg?.initDataUnsafe?.query_id}
                     InitDataUnsafe: {JSON.stringify(tg?.initDataUnsafe)}
+                    OrderID: {orderId}
                 </Typography>
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
@@ -97,6 +97,7 @@ export default function Home() {
                 {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
                     <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
                         <Card sx={{maxWidth: 420}}>
+                            {practise.id}
                             <YoutubeEmbed embedId={practise.file_resource_link}/>
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
