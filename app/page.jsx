@@ -20,9 +20,9 @@ export default function Home() {
     const onSendData = useCallback(async () => {
         const data_to_send = {
             action: WEBAPP_ACTIONS.buy_practise,
-                order_id: orderId,
-                user_id: tg?.user?.id,
-                query_id: tg.query_id
+            order_id: orderId,
+            user_id: tg?.user?.id,
+            query_id: tg.query_id
         }
         setSendData(data_to_send)
         if (orderId > 0 && tg?.query_id) {
@@ -78,7 +78,8 @@ export default function Home() {
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
-                    {JSON.stringify(tg)}
+                    User ID: {tg?.user?.id}
+                    Query ID: {tg?.query_id}
                 </Typography>
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
