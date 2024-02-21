@@ -19,20 +19,12 @@ export default function Home() {
     const [msg, setMsg] = useState(null)
 
     const onSendData = async () => {
-        const data_to_send = {
-            action: WEBAPP_ACTIONS.buy_practise,
-            order_id: orderId,
-            user_id: tg?.initDataUnsafe?.user?.id
-        }
-        setSendData(data_to_send)
-        if (orderId > 0) {
-            await PractiseAPI.send_data_to_bot(data_to_send).then(result => {
-                console.log("Result:", result)
-                tg.close()
-            }).catch(error => {
-                setMsg(JSON.stringify(error))
-            })
-        }
+        await PractiseAPI.send_data_to_bot(sendData).then(result => {
+            console.log("Result:", result)
+            tg.close()
+        }).catch(error => {
+            setMsg(JSON.stringify(error))
+        })
     }
 
     useEffect(() => {
@@ -62,6 +54,12 @@ export default function Home() {
 
     const orderAction = (order_id) => {
         console.log("Order ID:", order_id)
+        const data_to_send = {
+            action: WEBAPP_ACTIONS.buy_practise,
+            order_id: order_id,
+            user_id: tg?.initDataUnsafe?.user?.id
+        }
+        setSendData(data_to_send)
         setOrderId(order_id)
         const mainButton = tg?.MainButton
         if (mainButton) {
