@@ -1,6 +1,6 @@
 "use client"
 
-import {Button, Card, CardActions, CardContent, Chip, Container, Grid, Typography} from "@mui/material";
+import {Alert, Button, Card, CardActions, CardContent, Chip, Container, Grid, Typography} from "@mui/material";
 import {useCallback, useEffect, useState} from "react";
 import PractiseAPI from "../lib/practise";
 import YoutubeEmbed from "./_components/embed_youtube";
@@ -16,6 +16,7 @@ export default function Home() {
     const [sendData, setSendData] = useState({})
     const [orderId, setOrderId] = useState(-1)
     const [tg, setTg] = useState(null)
+    const [msg, setMsg] = useState(null)
 
     const onSendData = useCallback(async () => {
         const data_to_send = {
@@ -28,6 +29,8 @@ export default function Home() {
             await PractiseAPI.send_data_to_bot(data_to_send).then(result => {
                 console.log("Result:", result)
                 tg.close()
+            }).catch(error => {
+
             })
         }
     }, [orderId, tg])
@@ -70,6 +73,11 @@ export default function Home() {
 
     return (
         <Container>
+            {msg &&
+                <Alert color="error.main">
+                    {msg}
+                </Alert>
+            }
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="h3" color="info.main">
                     Курсы по йоге
