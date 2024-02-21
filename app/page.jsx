@@ -18,7 +18,7 @@ export default function Home() {
     const [tg, setTg] = useState(null)
     const [msg, setMsg] = useState(null)
 
-    const onSendData = useCallback(async () => {
+    const onSendData = async () => {
         const data_to_send = {
             action: WEBAPP_ACTIONS.buy_practise,
             order_id: orderId,
@@ -33,7 +33,7 @@ export default function Home() {
                 setMsg(JSON.stringify(error))
             })
         }
-    }, [tg])
+    }
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp
