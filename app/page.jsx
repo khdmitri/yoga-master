@@ -30,7 +30,7 @@ export default function Home() {
                 console.log("Result:", result)
                 tg.close()
             }).catch(error => {
-
+                setMsg(JSON.stringify(error))
             })
         }
     }, [orderId, tg])
@@ -85,10 +85,8 @@ export default function Home() {
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
-                    User ID: {tg?.initDataUnsafe?.user?.id}
-                    Query ID: {tg?.initDataUnsafe?.query_id}
-                    InitDataUnsafe: {JSON.stringify(tg?.initDataUnsafe)}
-                    OrderID: {orderId}
+                    User ID: {tg?.initDataUnsafe?.user?.id}<br />
+                    OrderID: {orderId}<br />
                 </Typography>
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
