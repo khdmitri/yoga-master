@@ -80,7 +80,7 @@ export default function Home() {
                 <Typography variant="body2" color="primary.main">
                     User ID: {tg?.initDataUnsafe?.user?.id}
                     Query ID: {tg?.initDataUnsafe?.query_id}
-                    InitDataUnsafe: {tg?.initDataUnsafe}
+                    InitDataUnsafe: {JSON.stringify(tg?.initDataUnsafe)}
                 </Typography>
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
