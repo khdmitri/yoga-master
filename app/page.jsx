@@ -63,6 +63,7 @@ export default function Home() {
         setOrderId(order_id)
         const mainButton = tg?.MainButton
         if (mainButton) {
+            mainButton.onClick(onSendData)
             mainButton.text = 'ПЕРЕЙТИ К ОПЛАТЕ'
             mainButton.show()
         }
