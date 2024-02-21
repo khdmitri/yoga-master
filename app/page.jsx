@@ -21,8 +21,8 @@ export default function Home() {
         const data_to_send = {
             action: WEBAPP_ACTIONS.buy_practise,
             order_id: orderId,
-            user_id: tg?.user?.id,
-            query_id: tg.query_id
+            user_id: tg?.initDataUnsafe?.user?.id,
+            query_id: tg.initDataUnsafe?.query_id
         }
         setSendData(data_to_send)
         if (orderId > 0 && tg?.query_id) {
@@ -78,8 +78,8 @@ export default function Home() {
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
-                    User ID: {tg?.user?.id}
-                    Query ID: {tg?.query_id}
+                    User ID: {tg?.initDataUnsafe?.user?.id}
+                    Query ID: {tg?.initDataUnsafe?.query_id}
                 </Typography>
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
