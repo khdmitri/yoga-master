@@ -13,17 +13,20 @@ function SellIcon() {
 
 export default function Home() {
     const [practiseList, setPractiseList] = useState(null)
+    const [sendData, setSendData] = useState({})
     const [orderId, setOrderId] = useState(-1)
     const [tg, setTg] = useState(null)
 
     const onSendData = useCallback(async () => {
-        if (orderId > 0 && tg?.query_id) {
-            await PractiseAPI.send_data_to_bot({
-                action: WEBAPP_ACTIONS.buy_practise,
+        const data_to_send = {
+            action: WEBAPP_ACTIONS.buy_practise,
                 order_id: orderId,
                 user_id: tg?.user?.id,
                 query_id: tg.query_id
-            }).then(result => {
+        }
+        setSendData(data_to_send)
+        if (orderId > 0 && tg?.query_id) {
+            await PractiseAPI.send_data_to_bot(data_to_send).then(result => {
                 console.log("Result:", result)
                 tg.close()
             })
@@ -75,6 +78,16 @@ export default function Home() {
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
                     {JSON.stringify(tg)}
+                </Typography>
+            </Box>
+            <Box id="courses" display="flex" justifyContent="center">
+                <Typography variant="body2" color="primary.main">
+                    ===========================================
+                </Typography>
+            </Box>
+            <Box id="courses" display="flex" justifyContent="center">
+                <Typography variant="body2" color="primary.main">
+                    {JSON.stringify(sendData)}
                 </Typography>
             </Box>
             <Grid container spacing={2} display="flex" justifyContent="center">
