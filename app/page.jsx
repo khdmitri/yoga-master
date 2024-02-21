@@ -18,10 +18,29 @@ export default function Home() {
     const [tg, setTg] = useState(null)
     const [msg, setMsg] = useState(null)
 
+    const onClosedInvoice = (result) => {
+        const {url, status} = result
+        switch (status) {
+            case "paid":
+                console.log("successfully paid -> show group")
+                break
+            case "cancelled":
+                console.log("User cancelled payment")
+                break
+            case "failed":
+                console.log("User failed payment")
+                break
+            case "pending":
+                console.log("Payment is pending")
+                break
+        }
+    }
+
     const onSendData = async () => {
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
-            console.log("Result:", result)
-            tg.close()
+            const link = result.data
+            tg.onEvent('invoiceClosed', onClosedInvoice)
+            tg.openInvoice(link)
         }).catch(error => {
             console.log(error)
         })
