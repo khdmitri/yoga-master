@@ -17,6 +17,7 @@ export default function Home() {
     const [orderId, setOrderId] = useState(-1)
     const [tg, setTg] = useState(null)
     const [msg, setMsg] = useState(null)
+    const [serverLink, setServerLink] = useState("")
 
     const onClosedInvoice = (result) => {
         const {url, status} = result
@@ -39,6 +40,7 @@ export default function Home() {
     const onSendData = async () => {
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
             const link = result.data
+            setServerLink(link)
             tg.onEvent('invoiceClosed', onClosedInvoice)
             tg.openInvoice(link)
         }).catch(error => {
@@ -113,7 +115,8 @@ export default function Home() {
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
-                    {JSON.stringify(sendData)}
+                    {JSON.stringify(sendData)}<br />
+                    {serverLink}
                 </Typography>
             </Box>
             <Grid container spacing={2} display="flex" justifyContent="center">
