@@ -116,7 +116,7 @@ export default function Home() {
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
                     {JSON.stringify(sendData)}<br />
-                    {serverLink}
+                    SERVER LINK: {serverLink}
                 </Typography>
             </Box>
             <Grid container spacing={2} display="flex" justifyContent="center">
