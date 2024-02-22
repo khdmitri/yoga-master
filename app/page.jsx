@@ -82,13 +82,18 @@ export default function Home() {
         }
         setSendData(data_to_send)
         setOrderId(order_id)
-        const mainButton = tg?.MainButton
-        if (mainButton) {
-            mainButton.onClick(onSendData)
-            mainButton.text = 'ПЕРЕЙТИ К ОПЛАТЕ'
-            mainButton.show()
-        }
     }
+
+    useEffect(() => {
+        if (sendData.order_id > 0) {
+            const mainButton = tg?.MainButton
+            if (mainButton) {
+                mainButton.onClick(onSendData)
+                mainButton.text = 'ПЕРЕЙТИ К ОПЛАТЕ'
+                mainButton.show()
+            }
+        }
+    }, [sendData])
 
     return (
         <Container>
