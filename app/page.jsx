@@ -1,43 +1,67 @@
 "use client"
 
-import {Alert, Button, Card, CardActions, CardContent, Chip, Container, Grid, Typography} from "@mui/material";
+import {
+    Accordion, AccordionDetails, AccordionSummary,
+    Alert,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Chip,
+    Container,
+    Grid,
+    Typography
+} from "@mui/material";
 import {useCallback, useEffect, useState} from "react";
 import PractiseAPI from "../lib/practise";
 import YoutubeEmbed from "./_components/embed_youtube";
 import Box from "@mui/material/Box";
 import {WEBAPP_ACTIONS} from "../lib/constants";
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import get_practise_price from "../lib/prices";
 
 function SellIcon() {
     return null;
 }
 
 export default function Home() {
+    const discount = process.env.NEXT_PUBLIC_PRICE_DISCOUNT
     const [practiseList, setPractiseList] = useState(null)
     const [sendData, setSendData] = useState({action: -1, user_id: -1, order_id: -1})
     const [orderId, setOrderId] = useState(-1)
+    const [targetLink, setTargetLink] = useState(null)
     const [tg, setTg] = useState(null)
     const [msg, setMsg] = useState(null)
+    const [severity, setSeverity] = useState("info")
+    const [isShowAlert, setIsShowAlert] = useState(false)
     const [serverLink, setServerLink] = useState("")
 
     const onClosedInvoice = (result) => {
         const {url, status} = result
         switch (status) {
             case "paid":
-                console.log("successfully paid -> show group")
+                showPractise(targetLink)
                 break
             case "cancelled":
-                console.log("User cancelled payment")
+                setMsg("Платеж был отменен пользователем")
+                setSeverity("warning")
+                setIsShowAlert(true)
                 break
             case "failed":
-                console.log("User failed payment")
+                setMsg("Платеж не завершился успешно")
+                setSeverity("error")
+                setIsShowAlert(true)
                 break
             case "pending":
-                console.log("Payment is pending")
+                setMsg("Платеж пока не обработан сервером, переходите в наш бот, чтобы увидеть статус")
+                setSeverity("warning")
+                setIsShowAlert(true)
                 break
         }
     }
 
     const onSendData = async () => {
+        setIsShowAlert(false)
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
             const link = result.data
             setServerLink(link)
@@ -73,7 +97,7 @@ export default function Home() {
         getPractiseList()
     }, [])
 
-    const orderAction = (order_id) => {
+    const orderAction = (order_id, url) => {
         console.log("Order ID:", order_id)
         const data_to_send = {
             action: WEBAPP_ACTIONS.buy_practise,
@@ -82,6 +106,7 @@ export default function Home() {
         }
         setSendData(data_to_send)
         setOrderId(order_id)
+        setTargetLink(url)
     }
 
     useEffect(() => {
@@ -94,6 +119,25 @@ export default function Home() {
             }
         }
     }, [sendData])
+
+    const if_practise_been_paid = async (practise_id) => {
+        await PractiseAPI.if_practise_been_paid({
+            practise_id,
+            tg_id: tg?.initDataUnsafe?.user?.id
+        }).then(result => {
+            const invoice = result.data
+            if (invoice) {
+                if (!invoice.media_id) {
+                    return true
+                }
+            }
+            return false
+        })
+    }
+
+    const showPractise = (url) => {
+        tg?.openTelegramLink(url)
+    }
 
     return (
         <Container>
@@ -109,8 +153,8 @@ export default function Home() {
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
-                    User ID: {tg?.initDataUnsafe?.user?.id}<br />
-                    OrderID: {orderId}<br />
+                    User ID: {tg?.initDataUnsafe?.user?.id}<br/>
+                    OrderID: {orderId}<br/>
                 </Typography>
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
@@ -120,7 +164,7 @@ export default function Home() {
             </Box>
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="body2" color="primary.main">
-                    {JSON.stringify(sendData)}<br />
+                    {JSON.stringify(sendData)}<br/>
                     SERVER LINK: {serverLink}
                 </Typography>
             </Box>
@@ -131,21 +175,41 @@ export default function Home() {
                             {practise.id}
                             <YoutubeEmbed embedId={practise.file_resource_link}/>
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    {practise.title}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {practise.description}
-                                </Typography>
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ArrowDownwardIcon/>}
+                                        aria-controls="panel1-content"
+                                        id={"panel1-" + practise.id.toString()}
+                                    >
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            {practise.title}
+                                        </Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {practise.description}
+                                        </Typography>
+                                    </AccordionDetails>
+                                </Accordion>
                             </CardContent>
                             <CardActions>
                                 <Grid container spacing={2} display="flex" justifyContent="space-between">
                                     <Grid item xs={12} display="flex" justifyContent="space-between">
-                                        <Button variant="contained" size="medium"
-                                                onClick={() => orderAction(practise.id)}>
-                                            КУПИТЬ ЗА 1999 руб.
-                                        </Button>
-                                        <Chip icon={<SellIcon/>} label="20%" color="error"/>
+                                        {if_practise_been_paid(practise.id) ?
+                                            <>
+                                                <Button variant="contained" size="medium"
+                                                        onClick={() => orderAction(practise.id,
+                                                            practise.channel_resource_link)}>
+                                                    {get_practise_price(practise)} руб.
+                                                </Button>
+                                                <Chip icon={<SellIcon/>} label={discount.toString() + "%"}
+                                                      color="error"/>
+                                            </> :
+                                            <Button variant="contained" size="medium"
+                                                    onClick={() => showPractise(practise.channel_resource_link)}>
+                                                Практика куплена. Нажмите здесь, чтобы смотреть
+                                            </Button>
+                                        }
                                     </Grid>
                                 </Grid>
                             </CardActions>
