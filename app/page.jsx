@@ -164,23 +164,6 @@ export default function Home() {
                     Курсы по йоге
                 </Typography>
             </Box>
-            <Box id="courses" display="flex" justifyContent="center">
-                <Typography variant="body2" color="primary.main">
-                    User ID: {tg?.initDataUnsafe?.user?.id}<br/>
-                    OrderID: {orderId}<br/>
-                </Typography>
-            </Box>
-            <Box id="courses" display="flex" justifyContent="center">
-                <Typography variant="body2" color="primary.main">
-                    ===========================================
-                </Typography>
-            </Box>
-            <Box id="courses" display="flex" justifyContent="center">
-                <Typography variant="body2" color="primary.main">
-                    {JSON.stringify(sendData)}<br/>
-                    SERVER LINK: {serverLink}
-                </Typography>
-            </Box>
             <Grid container spacing={2} display="flex" justifyContent="center">
                 {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
                     <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
