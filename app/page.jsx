@@ -19,6 +19,7 @@ import Box from "@mui/material/Box";
 import {WEBAPP_ACTIONS} from "../lib/constants";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import get_practise_price from "../lib/prices";
+import UniAlert from "./_components/alert/alert";
 
 function SellIcon() {
     return null;
@@ -35,6 +36,7 @@ export default function Home() {
     const [severity, setSeverity] = useState("info")
     const [isShowAlert, setIsShowAlert] = useState(false)
     const [serverLink, setServerLink] = useState("")
+    const [practisePaidList, setPractisePaidList] = useState()
 
     const onClosedInvoice = (result) => {
         const {url, status} = result
@@ -89,7 +91,17 @@ export default function Home() {
 
     const getPractiseList = async () => {
         await PractiseAPI.get_practises().then(
-            result => setPractiseList(result)
+            async (result) => {
+                setPractiseList(result)
+                const practise_paid = {}
+                result.data.map(async (practise) => {
+                    await if_practise_been_paid(practise.id).then(result => {
+                        practise_paid[practise.id] = !!result
+                    })
+                })
+                console.log("PractisePaid:", practise_paid)
+                setPractisePaidList(practise_paid)
+            }
         ).catch(error => console.log(error))
     }
 
@@ -121,9 +133,10 @@ export default function Home() {
     }, [sendData])
 
     const if_practise_been_paid = async (practise_id) => {
+        const tg_id = tg?.initDataUnsafe?.user?.id ? tg?.initDataUnsafe?.user?.id : -1
         await PractiseAPI.if_practise_been_paid({
             practise_id,
-            tg_id: tg?.initDataUnsafe?.user?.id
+            tg_id
         }).then(result => {
             const invoice = result.data
             if (invoice) {
@@ -141,10 +154,10 @@ export default function Home() {
 
     return (
         <Container>
-            {msg &&
-                <Alert color="error.main">
+            {isShowAlert &&
+                <UniAlert severity={severity}>
                     {msg}
-                </Alert>
+                </UniAlert>
             }
             <Box id="courses" display="flex" justifyContent="center">
                 <Typography variant="h3" color="info.main">
@@ -195,7 +208,12 @@ export default function Home() {
                             <CardActions>
                                 <Grid container spacing={2} display="flex" justifyContent="space-between">
                                     <Grid item xs={12} display="flex" justifyContent="space-between">
-                                        {if_practise_been_paid(practise.id) ?
+                                        {practisePaidList && practisePaidList[practise.id] ?
+                                            <Button variant="contained" size="medium"
+                                                    onClick={() => showPractise(practise.channel_resource_link)}>
+                                                Практика куплена. Нажмите здесь, чтобы смотреть
+                                            </Button>
+                                            : get_practise_price(practise) > 0 ?
                                             <>
                                                 <Button variant="contained" size="medium"
                                                         onClick={() => orderAction(practise.id,
@@ -204,10 +222,11 @@ export default function Home() {
                                                 </Button>
                                                 <Chip icon={<SellIcon/>} label={discount.toString() + "%"}
                                                       color="error"/>
-                                            </> :
+                                            </>
+                                            :
                                             <Button variant="contained" size="medium"
                                                     onClick={() => showPractise(practise.channel_resource_link)}>
-                                                Практика куплена. Нажмите здесь, чтобы смотреть
+                                                Нажмите здесь, чтобы смотреть
                                             </Button>
                                         }
                                     </Grid>
