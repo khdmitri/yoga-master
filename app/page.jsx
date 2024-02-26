@@ -183,8 +183,9 @@ export default function Home() {
                 {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
                     <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
                         <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
-                            {windowSize[0]}
-                            {cardRef?.current?.offsetWidth}
+                            {windowSize[0]}<br />
+                            {cardRef?.current?.offsetWidth}<br />
+                            {tg?.viewportHeight}
                             <YoutubeEmbed embedId={practise.file_resource_link} width={cardRef?.current?.offsetWidth}/>
                             <CardContent>
                                 <Accordion>
