@@ -187,7 +187,7 @@ export default function Home() {
                             {/*{cardRef?.current?.offsetWidth}<br />*/}
                             {/*{tg?.viewportHeight}*/}
                             <YoutubeEmbed embedId={practise.file_resource_link}
-                                          width={cardRef?.current ? cardRef?.current?.offsetWidth : windowSize[0]-15}/>
+                                          width={cardRef?.current ? cardRef?.current?.offsetWidth : windowSize[0]-20}/>
                             <CardContent>
                                 <Accordion sx={{color: tg?.themeParams?.text_color, backgroundColor: tg?.themeParams?.secondary_bg_color}}>
                                     <AccordionSummary
@@ -195,12 +195,12 @@ export default function Home() {
                                         aria-controls="panel1-content"
                                         id={"panel1-" + practise.id.toString()}
                                     >
-                                        <Typography gutterBottom variant="h6" component="div">
+                                        <Typography gutterBottom variant="h6" component="div" sx={{color: tg?.themeParams?.accent_text_color}}>
                                             {practise.title}
                                         </Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
-                                        <Typography variant="body2" color="text.secondary">
+                                        <Typography variant="body2" color={tg ? tg?.themeParams?.text_color : "text.secondary"}>
                                             {practise.description}
                                         </Typography>
                                     </AccordionDetails>
