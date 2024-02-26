@@ -181,14 +181,10 @@ const SectionPractise = () => {
                     {/*</Typography>*/}
                     <Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>
                 </Box>
-                <Box>
-                    TG={tg?.initDataUnsafe?.user?.id}
-                </Box>
                 <Grid container spacing={1} display="flex" justifyContent="center">
                     {practiseList && practiseList.map((practise) => (
                         <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
                             <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
-                                {JSON.stringify(practise)}
                                 <YoutubeEmbed embedId={practise.file_resource_link}
                                               width={cardRef?.current ? cardRef?.current.offsetWidth : windowSize[0] - 30}/>
                                 <CardContent>
