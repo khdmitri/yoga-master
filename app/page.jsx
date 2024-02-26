@@ -186,7 +186,8 @@ export default function Home() {
                             {windowSize[0]}<br />
                             {cardRef?.current?.offsetWidth}<br />
                             {tg?.viewportHeight}
-                            <YoutubeEmbed embedId={practise.file_resource_link} width={cardRef?.current?.offsetWidth}/>
+                            <YoutubeEmbed embedId={practise.file_resource_link}
+                                          width={cardRef?.current ? cardRef?.current?.offsetWidth : windowSize[0]-10}/>
                             <CardContent>
                                 <Accordion>
                                     <AccordionSummary
