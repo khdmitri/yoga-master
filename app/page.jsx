@@ -180,7 +180,7 @@ export default function Home() {
                     <Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100} />
                 </Box>
                 <Box>
-                    TG={tg?.initDataUnsafe.user.id}
+                    TG={tg?.initDataUnsafe?.user?.id}
                 </Box>
                 <Grid container spacing={1} display="flex" justifyContent="center">
                     {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
