@@ -70,7 +70,6 @@ export default function Home() {
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
             const link = result.data
             setServerLink(link)
-            tg.onEvent('invoiceClosed', onClosedInvoice)
             tg.openInvoice(link)
         }).catch(error => {
             console.log(error)
@@ -84,6 +83,7 @@ export default function Home() {
             tg.ready()
             tg.expand()
             tg.onEvent('mainButtonClicked', onSendData)
+            tg.onEvent('invoiceClosed', onClosedInvoice)
         }
         console.log("TG=", tg)
         setTg(tg)
@@ -101,6 +101,7 @@ export default function Home() {
 
         return () => {
             tg.offEvent('mainButtonClicked', onSendData)
+            tg.offEvent('invoiceClosed', onClosedInvoice)
             window.removeEventListener('resize', handleWindowResize);
         }
     }, [])
@@ -149,16 +150,14 @@ export default function Home() {
     }, [sendData])
 
     const if_practise_been_paid = async (practise_id) => {
-        const tg_id = tg?.initDataUnsafe?.user?.id ? tg?.initDataUnsafe?.user?.id : -1
+        const tg_id = tg ? tg?.initDataUnsafe?.user?.id : -1
         await PractiseAPI.if_practise_been_paid({
             practise_id,
-            tg_id
+            tg_id: tg_id
         }).then(result => {
+            console.log("Res if_paid:", result)
             const invoice = result.data
-            if (invoice) {
-                return true
-            }
-            return false
+            return !!invoice;
         })
     }
 
@@ -179,6 +178,9 @@ export default function Home() {
                     {/*    КУРСЫ ПО ЙОГЕ*/}
                     {/*</Typography>*/}
                     <Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100} />
+                </Box>
+                <Box>
+                    TG={tg?.initDataUnsafe.user.id}
                 </Box>
                 <Grid container spacing={1} display="flex" justifyContent="center">
                     {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
