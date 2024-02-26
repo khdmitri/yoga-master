@@ -12,7 +12,7 @@ import {
     Grid,
     Typography
 } from "@mui/material";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import PractiseAPI from "../lib/practise";
 import YoutubeEmbed from "./_components/embed_youtube";
 import Box from "@mui/material/Box";
@@ -37,6 +37,8 @@ export default function Home() {
     const [isShowAlert, setIsShowAlert] = useState(false)
     const [serverLink, setServerLink] = useState("")
     const [practisePaidList, setPractisePaidList] = useState()
+    const [windowSize, setWindowSize] = useState([640, 480]);
+    const cardRef = useRef(null);
 
     const onClosedInvoice = (result) => {
         const {url, status} = result
@@ -84,8 +86,21 @@ export default function Home() {
         }
         console.log("TG=", tg)
         setTg(tg)
+
+        setWindowSize([
+            window.innerWidth,
+            window.innerHeight,
+        ])
+
+        const handleWindowResize = () => {
+            setWindowSize([window.innerWidth, window.innerHeight]);
+        };
+
+        window.addEventListener('resize', handleWindowResize);
+
         return () => {
             tg.offEvent('mainButtonClicked', onSendData)
+            window.removeEventListener('resize', handleWindowResize);
         }
     }, [])
 
@@ -153,7 +168,7 @@ export default function Home() {
     }
 
     return (
-        <Container>
+        <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color}}>
             {isShowAlert &&
                 <UniAlert severity={severity}>
                     {msg}
@@ -167,9 +182,8 @@ export default function Home() {
             <Grid container spacing={2} display="flex" justifyContent="center">
                 {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
                     <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
-                        <Card sx={{maxWidth: 420}}>
-                            {practise.id}
-                            <YoutubeEmbed embedId={practise.file_resource_link}/>
+                        <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
+                            <YoutubeEmbed embedId={practise.file_resource_link} width={cardRef?.current?.offsetWidth}/>
                             <CardContent>
                                 <Accordion>
                                     <AccordionSummary
@@ -177,7 +191,7 @@ export default function Home() {
                                         aria-controls="panel1-content"
                                         id={"panel1-" + practise.id.toString()}
                                     >
-                                        <Typography gutterBottom variant="h5" component="div">
+                                        <Typography gutterBottom variant="h6" component="div">
                                             {practise.title}
                                         </Typography>
                                     </AccordionSummary>
@@ -197,20 +211,20 @@ export default function Home() {
                                                 Практика куплена. Нажмите здесь, чтобы смотреть
                                             </Button>
                                             : get_practise_price(practise) > 0 ?
-                                            <>
+                                                <>
+                                                    <Button variant="contained" size="medium"
+                                                            onClick={() => orderAction(practise.id,
+                                                                practise.channel_resource_link)}>
+                                                        {get_practise_price(practise)} руб.
+                                                    </Button>
+                                                    <Chip icon={<SellIcon/>} label={discount.toString() + "%"}
+                                                          color="error"/>
+                                                </>
+                                                :
                                                 <Button variant="contained" size="medium"
-                                                        onClick={() => orderAction(practise.id,
-                                                            practise.channel_resource_link)}>
-                                                    {get_practise_price(practise)} руб.
+                                                        onClick={() => showPractise(practise.channel_resource_link)}>
+                                                    Нажмите здесь, чтобы смотреть
                                                 </Button>
-                                                <Chip icon={<SellIcon/>} label={discount.toString() + "%"}
-                                                      color="error"/>
-                                            </>
-                                            :
-                                            <Button variant="contained" size="medium"
-                                                    onClick={() => showPractise(practise.channel_resource_link)}>
-                                                Нажмите здесь, чтобы смотреть
-                                            </Button>
                                         }
                                     </Grid>
                                 </Grid>
