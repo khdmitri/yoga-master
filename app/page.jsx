@@ -178,7 +178,7 @@ export default function Home() {
                     {/*<Typography variant="h4" color={tg ? tg.themeParams?.accent_text_color : "info.main"}>*/}
                     {/*    КУРСЫ ПО ЙОГЕ*/}
                     {/*</Typography>*/}
-                    <Image src="/labels/practises.gif" alt="Курсы по йоге" width={200} height={110} />
+                    <Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100} />
                 </Box>
                 <Grid container spacing={1} display="flex" justifyContent="center">
                     {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
