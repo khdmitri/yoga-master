@@ -20,6 +20,7 @@ import {WEBAPP_ACTIONS} from "../lib/constants";
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import get_practise_price from "../lib/prices";
 import UniAlert from "./_components/alert/alert";
+import Image from "next/image";
 
 function SellIcon() {
     return null;
@@ -155,9 +156,7 @@ export default function Home() {
         }).then(result => {
             const invoice = result.data
             if (invoice) {
-                if (!invoice.media_id) {
-                    return true
-                }
+                return true
             }
             return false
         })
@@ -168,75 +167,83 @@ export default function Home() {
     }
 
     return (
-        <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color}}>
-            {isShowAlert &&
-                <UniAlert severity={severity}>
-                    {msg}
-                </UniAlert>
-            }
-            <Box id="courses" display="flex" justifyContent="center">
-                <Typography variant="h3" color="info.main">
-                    Курсы по йоге
-                </Typography>
-            </Box>
-            <Grid container spacing={1} display="flex" justifyContent="center">
-                {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
-                    <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
-                        <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
-                            {/*{windowSize[0]}<br />*/}
-                            {/*{cardRef?.current?.offsetWidth}<br />*/}
-                            {/*{tg?.viewportHeight}*/}
-                            <YoutubeEmbed embedId={practise.file_resource_link}
-                                          width={cardRef?.current ? cardRef?.current?.offsetWidth : windowSize[0]-20}/>
-                            <CardContent>
-                                <Accordion sx={{color: tg?.themeParams?.text_color, backgroundColor: tg?.themeParams?.secondary_bg_color}}>
-                                    <AccordionSummary
-                                        expandIcon={<ArrowDownwardIcon/>}
-                                        aria-controls="panel1-content"
-                                        id={"panel1-" + practise.id.toString()}
-                                    >
-                                        <Typography gutterBottom variant="h6" component="div" sx={{color: tg?.themeParams?.accent_text_color}}>
-                                            {practise.title}
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Typography variant="body2" color={tg ? tg?.themeParams?.text_color : "text.secondary"}>
-                                            {practise.description}
-                                        </Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </CardContent>
-                            <CardActions>
-                                <Grid container spacing={2} display="flex" justifyContent="space-between">
-                                    <Grid item xs={12} display="flex" justifyContent="space-between">
-                                        {practisePaidList && practisePaidList[practise.id] ?
-                                            <Button variant="contained" size="medium"
-                                                    onClick={() => showPractise(practise.channel_resource_link)}>
-                                                Практика куплена. Нажмите здесь, чтобы смотреть
-                                            </Button>
-                                            : get_practise_price(practise) > 0 ?
-                                                <>
-                                                    <Button variant="contained" size="medium"
-                                                            onClick={() => orderAction(practise.id,
-                                                                practise.channel_resource_link)}>
-                                                        {get_practise_price(practise)} руб.
-                                                    </Button>
-                                                    <Chip icon={<SellIcon/>} label={discount.toString() + "%"}
-                                                          color="error"/>
-                                                </>
-                                                :
+        <section className="section_practise">
+            <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color,}}>
+                {isShowAlert &&
+                    <UniAlert severity={severity}>
+                        {msg}
+                    </UniAlert>
+                }
+                <Box id="courses" display="flex" justifyContent="center">
+                    {/*<Typography variant="h4" color={tg ? tg.themeParams?.accent_text_color : "info.main"}>*/}
+                    {/*    КУРСЫ ПО ЙОГЕ*/}
+                    {/*</Typography>*/}
+                    <Image src="/labels/practises.gif" alt="Курсы по йоге" width={200} height={110} />
+                </Box>
+                <Grid container spacing={1} display="flex" justifyContent="center">
+                    {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
+                        <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
+                            <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
+                                {/*{windowSize[0]}<br />*/}
+                                {/*{cardRef?.current?.offsetWidth}<br />*/}
+                                {/*{tg?.viewportHeight}*/}
+                                <YoutubeEmbed embedId={practise.file_resource_link}
+                                              width={cardRef?.current ? cardRef?.current?.offsetWidth : windowSize[0] - 30}/>
+                                <CardContent>
+                                    <Accordion sx={{
+                                        color: tg?.themeParams?.text_color,
+                                        backgroundColor: tg?.themeParams?.secondary_bg_color
+                                    }}>
+                                        <AccordionSummary
+                                            expandIcon={<ArrowDownwardIcon/>}
+                                            aria-controls="panel1-content"
+                                            id={"panel1-" + practise.id.toString()}
+                                        >
+                                            <Typography gutterBottom variant="h6" component="div"
+                                                        sx={{color: tg?.themeParams?.accent_text_color}}>
+                                                {practise.title}
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Typography variant="body2"
+                                                        color={tg ? tg?.themeParams?.text_color : "text.secondary"}>
+                                                {practise.description}
+                                            </Typography>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </CardContent>
+                                <CardActions>
+                                    <Grid container spacing={2} display="flex" justifyContent="space-between">
+                                        <Grid item xs={12} display="flex" justifyContent="space-between">
+                                            {practisePaidList && practisePaidList[practise.id] ?
                                                 <Button variant="contained" size="medium"
                                                         onClick={() => showPractise(practise.channel_resource_link)}>
-                                                    Нажмите здесь, чтобы смотреть
+                                                    Практика куплена. Нажмите здесь, чтобы смотреть
                                                 </Button>
-                                        }
+                                                : get_practise_price(practise) > 0 ?
+                                                    <>
+                                                        <Button variant="contained" size="medium"
+                                                                onClick={() => orderAction(practise.id,
+                                                                    practise.channel_resource_link)}>
+                                                            {get_practise_price(practise)} руб.
+                                                        </Button>
+                                                        <Chip icon={<SellIcon/>} label={discount.toString() + "%"}
+                                                              color="error"/>
+                                                    </>
+                                                    :
+                                                    <Button variant="contained" size="medium"
+                                                            onClick={() => showPractise(practise.channel_resource_link)}>
+                                                        Нажмите здесь, чтобы смотреть
+                                                    </Button>
+                                            }
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-        </Container>
+                                </CardActions>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
+            </Container>
+        </section>
     );
 }
