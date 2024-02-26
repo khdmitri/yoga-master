@@ -38,6 +38,9 @@ const SectionPractise = () => {
 
     const onClosedInvoice = (result) => {
         const {url, status} = result
+        setMsg(`Ваш платеж завершился со статусом: ${status}`)
+        setSeverity("info")
+        setIsShowAlert(true)
         switch (status) {
             case "paid":
                 showPractise(targetLink)
@@ -65,6 +68,7 @@ const SectionPractise = () => {
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
             const link = result.data
             setServerLink(link)
+            tg.MainButton.hide()
             tg.openInvoice(link)
         }).catch(error => {
             console.log(error)
@@ -165,6 +169,7 @@ const SectionPractise = () => {
 
     const showPractise = (url) => {
         tg?.openTelegramLink(url)
+        tg.close()
     }
 
     return (
