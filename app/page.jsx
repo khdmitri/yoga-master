@@ -179,17 +179,17 @@ export default function Home() {
                     Курсы по йоге
                 </Typography>
             </Box>
-            <Grid container spacing={2} display="flex" justifyContent="center">
+            <Grid container spacing={1} display="flex" justifyContent="center">
                 {practiseList && Array.isArray(practiseList.data) && practiseList.data.map((practise) => (
                     <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
                         <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
-                            {windowSize[0]}<br />
-                            {cardRef?.current?.offsetWidth}<br />
-                            {tg?.viewportHeight}
+                            {/*{windowSize[0]}<br />*/}
+                            {/*{cardRef?.current?.offsetWidth}<br />*/}
+                            {/*{tg?.viewportHeight}*/}
                             <YoutubeEmbed embedId={practise.file_resource_link}
-                                          width={cardRef?.current ? cardRef?.current?.offsetWidth : windowSize[0]-10}/>
+                                          width={cardRef?.current ? cardRef?.current?.offsetWidth : windowSize[0]-15}/>
                             <CardContent>
-                                <Accordion>
+                                <Accordion sx={{color: tg?.themeParams?.text_color, backgroundColor: tg?.themeParams?.secondary_bg_color}}>
                                     <AccordionSummary
                                         expandIcon={<ArrowDownwardIcon/>}
                                         aria-controls="panel1-content"
