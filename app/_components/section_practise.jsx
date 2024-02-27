@@ -21,6 +21,7 @@ import get_practise_price from "../../lib/prices";
 import {useCallback, useEffect, useRef, useState} from "react";
 import PractiseAPI from "../../lib/practise";
 import {WEBAPP_ACTIONS} from "../../lib/constants";
+import {useRouter} from "next/navigation";
 
 const SectionPractise = () => {
     const discount = process.env.NEXT_PUBLIC_PRICE_DISCOUNT
@@ -36,6 +37,7 @@ const SectionPractise = () => {
     const [windowSize, setWindowSize] = useState([640, 480]);
     const [isLoading, setIsLoading] = useState(false)
     const [cardWidth, setCardWidth] = useState(420);
+    const router = useRouter();
 
   const cardRef = useCallback(node => {
     if (node !== null) {
@@ -51,6 +53,7 @@ const SectionPractise = () => {
         switch (status) {
             case "paid":
                 showPractise(targetLink)
+                router.refresh()
                 break
             case "cancelled":
                 setMsg("Платеж был отменен пользователем")
@@ -127,7 +130,6 @@ const SectionPractise = () => {
             tg.onEvent('mainButtonClicked', onSendData)
             tg.onEvent('invoiceClosed', onClosedInvoice)
         }
-        console.log("TG=", tg)
         setTg(tg)
 
         setWindowSize([
@@ -148,16 +150,7 @@ const SectionPractise = () => {
         }
     }, [])
 
-    // useEffect(() => {
-    //      if (practiseList) {
-    //          practiseList.map(practise => {
-    //              console.log("Practise=", practise)
-    //          })
-    //      }
-    //  }, [practiseList])
-
     const orderAction = (order_id, url) => {
-        console.log("Order ID:", order_id)
         const data_to_send = {
             action: WEBAPP_ACTIONS.buy_practise,
             order_id: order_id,
@@ -180,7 +173,7 @@ const SectionPractise = () => {
     }, [sendData])
 
     const showPractise = (url) => {
-        tg?.openTelegramLink(url)
+        tg.openTelegramLink(url)
         tg.close()
     }
 
@@ -193,9 +186,6 @@ const SectionPractise = () => {
                     </UniAlert>
                 }
                 <Box id="courses" display="flex" justifyContent="center">
-                    {/*<Typography variant="h4" color={tg ? tg.themeParams?.accent_text_color : "info.main"}>*/}
-                    {/*    КУРСЫ ПО ЙОГЕ*/}
-                    {/*</Typography>*/}
                     <Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>
                 </Box>
                 {isLoading ?
