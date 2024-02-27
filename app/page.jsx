@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import "./page.module.css";
 
 function SellIcon() {
     return null;

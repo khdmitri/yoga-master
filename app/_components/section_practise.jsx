@@ -34,7 +34,14 @@ const SectionPractise = () => {
     const [isShowAlert, setIsShowAlert] = useState(false)
     const [serverLink, setServerLink] = useState("")
     const [windowSize, setWindowSize] = useState([640, 480]);
-    const cardRef = useRef(null);
+    const [isLoading, setIsLoading] = useState(false)
+    const [cardWidth, setCardWidth] = useState(420);
+
+  const cardRef = useCallback(node => {
+    if (node !== null) {
+      setCardWidth(node.getBoundingClientRect().width);
+    }
+  }, []);
 
     const onClosedInvoice = (result) => {
         const {url, status} = result
@@ -89,6 +96,7 @@ const SectionPractise = () => {
     }
 
     const getPractiseList = async () => {
+        setIsLoading(true)
         await PractiseAPI.get_practises().then(async (result) => {
                 const practises = await Promise.all(result.data.map(async (practise) => {
                     const r = await if_practise_been_paid(practise.id)
@@ -96,8 +104,12 @@ const SectionPractise = () => {
                     return practise
                 }))
                 setPractiseList(practises)
+                setIsLoading(false)
             }
-        )
+        ).catch(error => {
+            console.log(error)
+            setIsLoading(false)
+        })
     }
 
     useEffect(() => {
@@ -186,67 +198,73 @@ const SectionPractise = () => {
                     {/*</Typography>*/}
                     <Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>
                 </Box>
-                <Grid container spacing={1} display="flex" justifyContent="center">
-                    {practiseList && practiseList.map((practise) => (
-                        <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
-                            <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
-                                <YoutubeEmbed embedId={practise.file_resource_link}
-                                              width={cardRef?.current ? cardRef?.current.offsetWidth : windowSize[0] - 30}/>
-                                <CardContent>
-                                    <Accordion sx={{
-                                        color: tg?.themeParams?.text_color,
-                                        backgroundColor: tg?.themeParams?.secondary_bg_color
-                                    }}>
-                                        <AccordionSummary
-                                            expandIcon={<ArrowDownwardIcon/>}
-                                            aria-controls="panel1-content"
-                                            id={"panel1-" + practise.id.toString()}
-                                        >
-                                            <Typography gutterBottom variant="h6" component="div"
-                                                        sx={{color: tg?.themeParams?.accent_text_color}}>
-                                                {practise.title}
-                                            </Typography>
-                                        </AccordionSummary>
-                                        <AccordionDetails>
-                                            <Typography variant="body2"
-                                                        color={tg ? tg?.themeParams?.text_color : "text.secondary"}>
-                                                {practise.description}
-                                            </Typography>
-                                        </AccordionDetails>
-                                    </Accordion>
-                                </CardContent>
-                                <CardActions>
-                                    <Grid container spacing={2} display="flex" justifyContent="space-between">
-                                        <Grid item xs={12} display="flex" justifyContent="space-between">
-                                            {practise.is_paid ?
-                                                <Button variant="contained" size="medium"
-                                                        onClick={() => showPractise(practise.channel_resource_link)}>
-                                                    Практика куплена. Нажмите здесь, чтобы смотреть
-                                                </Button>
-                                                : get_practise_price(practise) > 0 ?
-                                                    <>
-                                                        <Button variant="contained" size="medium"
-                                                                onClick={() => orderAction(practise.id,
-                                                                    practise.channel_resource_link)}>
-                                                            {get_practise_price(practise)} руб.
-                                                        </Button>
-                                                        <Chip icon={<SellIcon/>}
-                                                              label={discount.toString() + "%"}
-                                                              color="error"/>
-                                                    </>
-                                                    :
+                {isLoading ?
+                    <Box display="flex" justifyContent="center">
+                        <Image src="/service/is_loading.gif" alt="is loading..." height={256} width={256} priority={true}/>
+                    </Box>
+                    :
+                    <Grid container spacing={1} display="flex" justifyContent="center">
+                        {practiseList && practiseList.map((practise) => (
+                            <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
+                                <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
+                                    <YoutubeEmbed embedId={practise.file_resource_link}
+                                                  width={cardWidth}/>
+                                    <CardContent>
+                                        <Accordion sx={{
+                                            color: tg?.themeParams?.text_color,
+                                            backgroundColor: tg?.themeParams?.secondary_bg_color
+                                        }}>
+                                            <AccordionSummary
+                                                expandIcon={<ArrowDownwardIcon/>}
+                                                aria-controls="panel1-content"
+                                                id={"panel1-" + practise.id.toString()}
+                                            >
+                                                <Typography gutterBottom variant="h6" component="div"
+                                                            sx={{color: tg?.themeParams?.accent_text_color}}>
+                                                    {practise.title}
+                                                </Typography>
+                                            </AccordionSummary>
+                                            <AccordionDetails>
+                                                <Typography variant="body2"
+                                                            color={tg ? tg?.themeParams?.text_color : "text.secondary"}>
+                                                    {practise.description}
+                                                </Typography>
+                                            </AccordionDetails>
+                                        </Accordion>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Grid container spacing={2} display="flex" justifyContent="space-between">
+                                            <Grid item xs={12} display="flex" justifyContent="space-between">
+                                                {practise.is_paid ?
                                                     <Button variant="contained" size="medium"
                                                             onClick={() => showPractise(practise.channel_resource_link)}>
-                                                        Нажмите здесь, чтобы смотреть
+                                                        Практика куплена. Нажмите здесь, чтобы смотреть
                                                     </Button>
-                                            }
+                                                    : get_practise_price(practise) > 0 ?
+                                                        <>
+                                                            <Button variant="contained" size="medium"
+                                                                    onClick={() => orderAction(practise.id,
+                                                                        practise.channel_resource_link)}>
+                                                                {get_practise_price(practise)} руб.
+                                                            </Button>
+                                                            <Chip icon={<SellIcon/>}
+                                                                  label={discount.toString() + "%"}
+                                                                  color="error"/>
+                                                        </>
+                                                        :
+                                                        <Button variant="contained" size="medium"
+                                                                onClick={() => showPractise(practise.channel_resource_link)}>
+                                                            Нажмите здесь, чтобы смотреть
+                                                        </Button>
+                                                }
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </CardActions>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
+                                    </CardActions>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
+                }
             </Container>
         </section>
     );

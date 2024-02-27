@@ -228,3 +228,9 @@
     transform: rotate(0deg);
   }
 }
+
+.section_practise {
+  min-height: fit-content;
+  background: rgb(50,50,232);
+  background: linear-gradient(90deg, rgba(50,50,232,1) 0%, rgba(244,244,247,1) 0%, rgba(105,216,238,1) 100%);
+}
