@@ -178,15 +178,16 @@ const SectionPractise = () => {
     }
 
     return (
-        <section className="section_practise">
+        <section className="section_practise" id="PRACTISE_ID">
             <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color,}}>
                 {isShowAlert &&
                     <UniAlert severity={severity}>
                         {msg}
                     </UniAlert>
                 }
-                <Box id="courses" display="flex" justifyContent="center">
-                    <Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>
+                <Box id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
+                    {/*<Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>*/}
+                    <Typography variant="h6" color="#00008B"><strong>🧘 АВТОРСКИЕ КУРСЫ ПО ЙОГЕ 🧘</strong></Typography>
                 </Box>
                 {isLoading ?
                     <Box display="flex" justifyContent="center">
