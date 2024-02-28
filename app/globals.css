@@ -98,8 +98,7 @@ html:not([data-scroll="0"]) .navbar {
 
 body {
     /*background-color: var(--tg-theme-bg-color);*/
-    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
-    url("/images/default_bg.jpg") center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("/images/default_bg.jpg") center/cover;
     color: var(--tg-theme-text-color, rgb(var(--foreground-rgb)));
 }
 

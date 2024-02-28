@@ -1,10 +1,10 @@
 "use client"
 import React, {useEffect} from 'react';
 
-SwiperCore.use([Navigation, Pagination, A11y, EffectCards]);
+SwiperCore.use([Navigation, Pagination, A11y, EffectCards, Autoplay]);
 
 // Import Swiper React components
-import {Navigation, Pagination, A11y, EffectCards} from 'swiper/modules';
+import {Navigation, Pagination, A11y, EffectCards, Autoplay} from 'swiper/modules';
 import {Swiper, SwiperSlide} from 'swiper/react';
 
 // Import Swiper styles
@@ -17,7 +17,6 @@ import 'swiper/css/effect-fade';
 import Image from "next/image";
 import SwiperCore from "swiper";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import {useState} from "react";
 
 const SectionCarousel = () => {
@@ -48,15 +47,16 @@ const SectionCarousel = () => {
         <Box display="flex" justifyContent="center">
             <Swiper
                 // install Swiper modules
-                modules={[Navigation, Pagination, A11y, EffectCards]}
+                modules={[Navigation, Pagination, A11y, EffectCards, Autoplay]}
+                autoplay={true}
                 effect="cards"
                 spaceBetween={0}
                 slidesPerView={1}
                 navigation
                 pagination={{clickable: true}}
                 // scrollbar={{draggable: true}}
-                onSwiper={(swiper) => console.log(swiper)}
-                onSlideChange={() => console.log('slide change')}
+                // onSwiper={(swiper) => console.log(swiper)}
+                // onSlideChange={() => console.log('slide change')}
                 wrapperTag="ul"
             >
                 <SwiperSlide tag="li" key="photo_1">
