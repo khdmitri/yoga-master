@@ -1,10 +1,10 @@
 "use client"
 import React, {useEffect} from 'react';
 
-SwiperCore.use([Navigation, Pagination, A11y]);
+SwiperCore.use([Navigation, Pagination, A11y, EffectCards]);
 
 // Import Swiper React components
-import {Navigation, Pagination, Scrollbar, A11y} from 'swiper/modules';
+import {Navigation, Pagination, A11y, EffectCards} from 'swiper/modules';
 import {Swiper, SwiperSlide} from 'swiper/react';
 
 // Import Swiper styles
@@ -12,6 +12,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import 'swiper/css/effect-fade';
 
 import Image from "next/image";
 import SwiperCore from "swiper";
@@ -30,8 +31,8 @@ const SectionCarousel = () => {
         ])
 
         setPhotoSize([
-            Math.round(window.innerWidth * 0.9),
-            Math.round(window.innerWidth * 0.9 * 16 / 9)
+            Math.round(window.innerWidth * 0.6),
+            Math.round(window.innerWidth * 0.6 * 16 / 9)
         ])
 
         const handleWindowResize = () => {
@@ -47,7 +48,8 @@ const SectionCarousel = () => {
         <Box display="flex" justifyContent="center">
             <Swiper
                 // install Swiper modules
-                modules={[Navigation, Pagination, A11y]}
+                modules={[Navigation, Pagination, A11y, EffectCards]}
+                effect="cards"
                 spaceBetween={0}
                 slidesPerView={1}
                 navigation
@@ -68,6 +70,20 @@ const SectionCarousel = () => {
                     <div className="shadowed-box">
                         <Box display="flex" justifyContent="center">
                             <Image src="/carousel/2.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
+                        </Box>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide tag="li" key="photo_3">
+                    <div className="shadowed-box">
+                        <Box display="flex" justifyContent="center">
+                            <Image src="/carousel/3.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
+                        </Box>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide tag="li" key="photo_4">
+                    <div className="shadowed-box">
+                        <Box display="flex" justifyContent="center">
+                            <Image src="/carousel/4.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
                         </Box>
                     </div>
                 </SwiperSlide>

@@ -199,13 +199,14 @@ const SectionPractise = () => {
                     <Grid container spacing={1} display="flex" justifyContent="center">
                         {practiseList && practiseList.map((practise) => (
                             <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
-                                <Card sx={{maxWidth: windowSize[0]}} ref={cardRef}>
+                                <Card sx={{maxWidth: windowSize[0], backgroundColor: "#FFDAB9", boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;"}}
+                                      ref={cardRef}>
                                     <YoutubeEmbed embedId={practise.file_resource_link}
                                                   width={cardWidth}/>
                                     <CardContent>
                                         <Accordion sx={{
                                             color: tg?.themeParams?.text_color,
-                                            backgroundColor: tg?.themeParams?.secondary_bg_color
+                                            backgroundColor: "#FFE4B5"
                                         }}>
                                             <AccordionSummary
                                                 expandIcon={<ArrowDownwardIcon/>}
