@@ -30,8 +30,8 @@ const SectionCarousel = () => {
         ])
 
         setPhotoSize([
-            Math.round(window.innerWidth*0.9),
-            Math.round(window.innerWidth*0.9*16/9)
+            Math.round(window.innerWidth * 0.9),
+            Math.round(window.innerWidth * 0.9 * 16 / 9)
         ])
 
         const handleWindowResize = () => {
@@ -41,40 +41,38 @@ const SectionCarousel = () => {
         return () => {
             window.removeEventListener('resize', handleWindowResize);
         }
-    })
+    }, [])
 
     return (
-        <Container>
-            <Box display="flex" justifyContent="center">
-                <Swiper
-                    // install Swiper modules
-                    modules={[Navigation, Pagination, A11y]}
-                    spaceBetween={0}
-                    slidesPerView={1}
-                    navigation
-                    pagination={{clickable: true}}
-                    // scrollbar={{draggable: true}}
-                    onSwiper={(swiper) => console.log(swiper)}
-                    onSlideChange={() => console.log('slide change')}
-                    wrapperTag="ul"
-                >
-                    <SwiperSlide tag="li">
-                        <div className="shadowed-box">
-                            <Box display="flex" justifyContent="center">
-                                <Image src="/carousel/1.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
-                            </Box>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide tag="li">
-                        <div className="shadowed-box">
-                            <Box display="flex" justifyContent="center">
-                                <Image src="/carousel/2.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
-                            </Box>
-                        </div>
-                    </SwiperSlide>
-                </Swiper>
-            </Box>
-        </Container>
+        <Box display="flex" justifyContent="center">
+            <Swiper
+                // install Swiper modules
+                modules={[Navigation, Pagination, A11y]}
+                spaceBetween={0}
+                slidesPerView={1}
+                navigation
+                pagination={{clickable: true}}
+                // scrollbar={{draggable: true}}
+                onSwiper={(swiper) => console.log(swiper)}
+                onSlideChange={() => console.log('slide change')}
+                wrapperTag="ul"
+            >
+                <SwiperSlide tag="li" key="photo_1">
+                    <div className="shadowed-box">
+                        <Box display="flex" justifyContent="center">
+                            <Image src="/carousel/1.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
+                        </Box>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide tag="li" key="photo_2">
+                    <div className="shadowed-box">
+                        <Box display="flex" justifyContent="center">
+                            <Image src="/carousel/2.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
+                        </Box>
+                    </div>
+                </SwiperSlide>
+            </Swiper>
+        </Box>
     );
 };
 

@@ -22,6 +22,7 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import PractiseAPI from "../../lib/practise";
 import {WEBAPP_ACTIONS} from "../../lib/constants";
 import {useRouter} from "next/navigation";
+import SectionCarousel from "./section_carousel";
 
 const SectionPractise = () => {
     const discount = process.env.NEXT_PUBLIC_PRICE_DISCOUNT
@@ -180,6 +181,7 @@ const SectionPractise = () => {
     return (
         <section className="section_practise" id="PRACTISE_ID">
             <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color,}}>
+                {/*<SectionCarousel />*/}
                 {isShowAlert &&
                     <UniAlert severity={severity}>
                         {msg}
