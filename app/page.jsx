@@ -26,6 +26,7 @@ export default function Home() {
     const [targetLink, setTargetLink] = useState(null)
     const [needRefreshPractise, setNeedRefreshPractise] = useState(true)
     const [needRefreshOnline, setNeedRefreshOnline] = useState(true)
+    const [obj, setObj] = useState({})
     const router = useRouter()
 
     const orderAction = (order_id, url, action) => {
@@ -42,17 +43,17 @@ export default function Home() {
         setIsShowAlert(false)
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
             const link = result.data
-            setServerLink(link)
-            tg.MainButton.hide()
-            tg.openInvoice(link)
+            // tg.MainButton.hide()
+            setObj({...obj, link, user_tg_id: tg?.initDataUnsafe?.user?.id})
+            tg?.openInvoice(link)
         }).catch(error => {
             console.log(error)
         })
     }
 
     const showPractise = (url) => {
-        tg.openTelegramLink(url)
-        tg.close()
+        tg?.openTelegramLink(url)
+        tg?.close()
     }
 
     const onClosedInvoice = (result) => {
@@ -118,6 +119,9 @@ export default function Home() {
                     {msg}
                 </UniAlert>
             }
+            <Box>
+                {JSON.stringify(obj)}
+            </Box>
             <Box>
                 <SectionIntro/>
                 <SectionCarousel/>
