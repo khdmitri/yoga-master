@@ -59,7 +59,6 @@ export default function Home() {
     const onClosedInvoice = (result) => {
         setObj({...obj, tg_id: tg?.initDataUnsafe?.user?.id})
         setSendData({action: -1, user_id: -1, order_id: -1})
-        tg?.MainButton.hide()
         const {url, status} = result
         setMsg(`Ваш платеж завершился со статусом: ${status}`)
         setSeverity("info")
@@ -106,13 +105,16 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+        const mainButton = tg?.MainButton
         if (sendData.order_id > 0) {
-            const mainButton = tg?.MainButton
             if (mainButton) {
                 mainButton.onClick(onSendData)
                 mainButton.text = 'ПЕРЕЙТИ К ОПЛАТЕ'
                 mainButton.show()
             }
+        } else {
+            if (mainButton)
+                mainButton.hide()
         }
     }, [sendData])
 
