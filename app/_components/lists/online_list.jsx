@@ -64,7 +64,7 @@ const OnlineList = (props) => {
                 <Box>
                     {updatedLessons.map(lesson => {
                         return (
-                            <Accordion>
+                            <Accordion key={lesson.id}>
                                 <AccordionSummary
                                     expandIcon={<ArrowDownwardIcon/>}
                                     aria-controls="panel1-content"
