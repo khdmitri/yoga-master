@@ -99,8 +99,7 @@ const SectionPractise = (props) => {
     }, [])
 
     const showPractise = (url) => {
-        tg.openTelegramLink(url)
-        tg.close()
+        tg.openLink(url)
     }
 
 

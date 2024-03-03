@@ -41,6 +41,7 @@ export default function Home() {
 
     const onSendData = async () => {
         setIsShowAlert(false)
+        tg?.MainButton?.hide()
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
             const link = result.data
             // tg.MainButton.hide()
