@@ -16,8 +16,6 @@ const OnlineList = (props) => {
     const [updatedLessons, setUpdatedLessons] = useState(lessons)
     const router = useRouter()
 
-    console.log("GOT LESSONS=", lessons)
-
     useEffect(() => {
         const update_lessons = async () => {
             if (lessons) {
