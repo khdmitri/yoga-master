@@ -24,67 +24,19 @@ import {WEBAPP_ACTIONS} from "../../lib/constants";
 import {useRouter} from "next/navigation";
 import SectionCarousel from "./section_carousel";
 
-const SectionPractise = () => {
+const SectionPractise = (props) => {
+    const {setMsg, setSeverity, setIsShowAlert, tg, orderAction, needRefresh, setNeedRefresh} = props
     const discount = process.env.NEXT_PUBLIC_PRICE_DISCOUNT
     const [practiseList, setPractiseList] = useState(null)
-    const [sendData, setSendData] = useState({action: -1, user_id: -1, order_id: -1})
-    const [orderId, setOrderId] = useState(-1)
-    const [targetLink, setTargetLink] = useState(null)
-    const [tg, setTg] = useState(null)
-    const [msg, setMsg] = useState(null)
-    const [severity, setSeverity] = useState("info")
-    const [isShowAlert, setIsShowAlert] = useState(false)
-    const [serverLink, setServerLink] = useState("")
     const [windowSize, setWindowSize] = useState([640, 480]);
     const [isLoading, setIsLoading] = useState(false)
     const [cardWidth, setCardWidth] = useState(420);
-    const router = useRouter();
 
-  const cardRef = useCallback(node => {
-    if (node !== null) {
-      setCardWidth(node.getBoundingClientRect().width);
-    }
-  }, []);
-
-    const onClosedInvoice = (result) => {
-        const {url, status} = result
-        setMsg(`Ваш платеж завершился со статусом: ${status}`)
-        setSeverity("info")
-        setIsShowAlert(true)
-        switch (status) {
-            case "paid":
-                showPractise(targetLink)
-                router.refresh()
-                break
-            case "cancelled":
-                setMsg("Платеж был отменен пользователем")
-                setSeverity("warning")
-                setIsShowAlert(true)
-                break
-            case "failed":
-                setMsg("Платеж не завершился успешно")
-                setSeverity("error")
-                setIsShowAlert(true)
-                break
-            case "pending":
-                setMsg("Платеж пока не обработан сервером, переходите в наш бот, чтобы увидеть статус")
-                setSeverity("warning")
-                setIsShowAlert(true)
-                break
+    const cardRef = useCallback(node => {
+        if (node !== null) {
+            setCardWidth(node.getBoundingClientRect().width);
         }
-    }
-
-    const onSendData = async () => {
-        setIsShowAlert(false)
-        await PractiseAPI.send_data_to_bot(sendData).then(result => {
-            const link = result.data
-            setServerLink(link)
-            tg.MainButton.hide()
-            tg.openInvoice(link)
-        }).catch(error => {
-            console.log(error)
-        })
-    }
+    }, []);
 
     const if_practise_been_paid = async (practise_id) => {
         const tg_id = tg?.initDataUnsafe?.user?.id
@@ -117,21 +69,13 @@ const SectionPractise = () => {
     }
 
     useEffect(() => {
-        if (tg) {
+        if (tg && needRefresh) {
             getPractiseList()
+            setNeedRefresh(false)
         }
-    }, [tg])
+    }, [tg, needRefresh])
 
     useEffect(() => {
-        const tg = window.Telegram?.WebApp
-        console.log("Telegram:", window.Telegram)
-        if (tg) {
-            tg.ready()
-            tg.expand()
-            tg.onEvent('mainButtonClicked', onSendData)
-            tg.onEvent('invoiceClosed', onClosedInvoice)
-        }
-        setTg(tg)
 
         setWindowSize([
             window.innerWidth,
@@ -145,61 +89,37 @@ const SectionPractise = () => {
         window.addEventListener('resize', handleWindowResize);
 
         return () => {
-            tg?.offEvent('mainButtonClicked', onSendData)
-            tg?.offEvent('invoiceClosed', onClosedInvoice)
             window.removeEventListener('resize', handleWindowResize);
         }
     }, [])
-
-    const orderAction = (order_id, url) => {
-        const data_to_send = {
-            action: WEBAPP_ACTIONS.buy_practise,
-            order_id: order_id,
-            user_id: tg?.initDataUnsafe?.user?.id
-        }
-        setSendData(data_to_send)
-        setOrderId(order_id)
-        setTargetLink(url)
-    }
-
-    useEffect(() => {
-        if (sendData.order_id > 0) {
-            const mainButton = tg?.MainButton
-            if (mainButton) {
-                mainButton.onClick(onSendData)
-                mainButton.text = 'ПЕРЕЙТИ К ОПЛАТЕ'
-                mainButton.show()
-            }
-        }
-    }, [sendData])
 
     const showPractise = (url) => {
         tg.openTelegramLink(url)
         tg.close()
     }
 
+
     return (
         <section className="section_practise" id="PRACTISE_ID">
             <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color,}}>
-                {/*<SectionCarousel />*/}
-                {isShowAlert &&
-                    <UniAlert severity={severity}>
-                        {msg}
-                    </UniAlert>
-                }
                 <Box id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
                     {/*<Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>*/}
                     <Typography variant="h6" color="#00008B"><strong>🧘 АВТОРСКИЕ КУРСЫ ПО ЙОГЕ 🧘</strong></Typography>
                 </Box>
                 {isLoading ?
                     <Box display="flex" justifyContent="center">
-                        <Image src="/service/is_loading.gif" alt="is loading..." height={256} width={256} priority={true}/>
+                        <Image src="/service/is_loading.gif" alt="is loading..." height={256} width={256}
+                               priority={true}/>
                     </Box>
                     :
                     <Grid container spacing={1} display="flex" justifyContent="center">
                         {practiseList && practiseList.map((practise) => (
                             <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
-                                <Card sx={{maxWidth: windowSize[0], backgroundColor: "#FFDAB9", boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;"}}
+                                <Card sx={{
+                                    maxWidth: windowSize[0],
+                                    backgroundColor: "#FFDAB9",
+                                    boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;"
+                                }}
                                       ref={cardRef}>
                                     <YoutubeEmbed embedId={practise.file_resource_link}
                                                   width={cardWidth}/>
@@ -238,7 +158,8 @@ const SectionPractise = () => {
                                                         <>
                                                             <Button variant="contained" size="medium"
                                                                     onClick={() => orderAction(practise.id,
-                                                                        practise.channel_resource_link)}>
+                                                                        practise.channel_resource_link,
+                                                                        WEBAPP_ACTIONS.buy_practise)}>
                                                                 {get_practise_price(practise)} руб.
                                                             </Button>
                                                             <Chip icon={<SellIcon/>}
