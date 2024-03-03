@@ -41,7 +41,6 @@ export default function Home() {
 
     const onSendData = async () => {
         setIsShowAlert(false)
-        tg?.MainButton?.hide()
         await PractiseAPI.send_data_to_bot(sendData).then(result => {
             const link = result.data
             // tg.MainButton.hide()
@@ -54,10 +53,12 @@ export default function Home() {
 
     const showPractise = (url) => {
         tg?.openLink(url)
+        tg?.openTelegramLink(url)
     }
 
     const onClosedInvoice = (result) => {
         setObj({...obj, tg_id: tg?.initDataUnsafe?.user?.id})
+        setSendData({action: -1, user_id: -1, order_id: -1})
         tg?.MainButton.hide()
         const {url, status} = result
         setMsg(`Ваш платеж завершился со статусом: ${status}`)
