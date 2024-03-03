@@ -1,28 +1,27 @@
 "use client"
 
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
     Accordion,
     AccordionDetails,
-    AccordionSummary, Button,
-    Card, CardActions,
-    CardContent, Chip,
+    AccordionSummary,
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    Chip,
     Container,
     Grid,
     Typography
 } from "@mui/material";
-import UniAlert from "./alert/alert";
 import Box from "@mui/material/Box";
 import Image from "next/image";
 import SellIcon from '@mui/icons-material/Sell';
 import YoutubeEmbed from "./embed_youtube";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import get_practise_price from "../../lib/prices";
-import {useCallback, useEffect, useRef, useState} from "react";
 import PractiseAPI from "../../lib/practise";
 import {WEBAPP_ACTIONS} from "../../lib/constants";
-import {useRouter} from "next/navigation";
-import SectionCarousel from "./section_carousel";
 
 const SectionPractise = (props) => {
     const {setMsg, setSeverity, setIsShowAlert, tg, orderAction, needRefresh, setNeedRefresh} = props
@@ -52,6 +51,7 @@ const SectionPractise = (props) => {
     }
 
     const getPractiseList = async () => {
+        console.log("Try to get practise list")
         setIsLoading(true)
         await PractiseAPI.get_practises().then(async (result) => {
                 const practises = await Promise.all(result.data.map(async (practise) => {
@@ -59,6 +59,7 @@ const SectionPractise = (props) => {
                     practise.is_paid = !!r
                     return practise
                 }))
+                console.log("practises=", practises)
                 setPractiseList(practises)
                 setIsLoading(false)
             }
@@ -74,6 +75,10 @@ const SectionPractise = (props) => {
             setNeedRefresh(false)
         }
     }, [tg, needRefresh])
+
+    useEffect(() => {
+        console.log("PractiseList=", practiseList)
+    }, [practiseList])
 
     useEffect(() => {
 
@@ -102,7 +107,7 @@ const SectionPractise = (props) => {
     return (
         <section className="section_practise" id="PRACTISE_ID">
             <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color,}}>
-                <Box id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
+                <Box className="section-label-box" id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
                     {/*<Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>*/}
                     <Typography variant="h6" color="#00008B"><strong>🧘 АВТОРСКИЕ КУРСЫ ПО ЙОГЕ 🧘</strong></Typography>
                 </Box>
@@ -117,7 +122,7 @@ const SectionPractise = (props) => {
                             <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
                                 <Card sx={{
                                     maxWidth: windowSize[0],
-                                    backgroundColor: "#FFDAB9",
+                                    backgroundColor: "beige",
                                     boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;"
                                 }}
                                       ref={cardRef}>

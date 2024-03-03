@@ -28,6 +28,10 @@ const SectionOnline = (props) => {
     }, [])
 
     useEffect(() => {
+        console.log("LESSONS=", lessons)
+    })
+
+    useEffect(() => {
         if (tg && needRefresh) {
             if (tg?.initDataUnsafe?.user?.id) {
                 const get_invoice = async () => {
@@ -46,7 +50,7 @@ const SectionOnline = (props) => {
     return (
         <section className="section_online" id="ONLINE_ID">
             <Container>
-                <Box id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
+                <Box className="section-label-box" id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
                     <Typography variant="h6" color="#00008B"><strong>ЗАПИСАТЬСЯ НА ONLINE-УРОК 👇</strong></Typography>
                 </Box>
                 {isLoading ?

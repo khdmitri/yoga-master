@@ -10,6 +10,8 @@ import UniAlert from "./_components/alert/alert";
 import SectionOnline from "./_components/section_online";
 import {WEBAPP_ACTIONS} from "../lib/constants";
 import {useRouter} from "next/navigation";
+import SectionPractise from "./_components/section_practise";
+import SectionFooter from "./_components/section_footer";
 
 function SellIcon() {
     return null;
@@ -109,8 +111,6 @@ export default function Home() {
         }
     }, [sendData])
 
-    const SectionPractise = dynamic(() => import('./_components/section_practise'), {ssr: false})
-
     return (
         <>
             {isShowAlert &&
@@ -129,6 +129,7 @@ export default function Home() {
                                setIsShowAlert={setIsShowAlert} tg={tg} orderAction={orderAction}
                                needRefresh={needRefreshOnline} setNeedRefresh={setNeedRefreshOnline}
                 />
+                <SectionFooter tg={tg} />
             </Box>
         </>
     );

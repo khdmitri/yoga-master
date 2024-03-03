@@ -16,19 +16,33 @@ const OnlineList = (props) => {
     const [updatedLessons, setUpdatedLessons] = useState(lessons)
     const router = useRouter()
 
+    console.log("GOT LESSONS=", lessons)
+
     useEffect(() => {
         const update_lessons = async () => {
-            const updated_lessons = await Promise.all(lessons.map(async (lesson) => {
-                const group = await PractiseAPI.is_group_member({
-                    tg_id: user_id,
-                    media_id: lesson.id
-                })
-                lesson.is_member = !!group.data
-                return lesson
-            }))
+            if (lessons) {
+                const updated_lessons = await Promise.all(lessons.map(async (lesson) => {
+                    const group = await PractiseAPI.is_group_member({
+                        tg_id: user_id ? user_id : -1,
+                        media_id: lesson.id
+                    })
+                    lesson.is_member = !!group.data
+                    return lesson
+                }))
+                setUpdatedLessons(updated_lessons)
+            } else
+                return []
         }
-        setUpdatedLessons(update_lessons())
+        update_lessons()
     }, [])
+
+    useEffect(() => {
+        console.log("UpdatedLessons=", updatedLessons)
+    }, [updatedLessons])
+
+    const btnAbonementClicked = async () => {
+        orderAction(-1, URL, WEBAPP_ACTIONS.buy_abonement)
+    }
 
     const btnJoinClicked = async (lesson) => {
         if (lesson.is_free) {
@@ -70,31 +84,34 @@ const OnlineList = (props) => {
                                     aria-controls="panel1-content"
                                     id={"lesson-list-" + lesson.id.toString()}
                                 >
-                                    <Typography gutterBottom variant="h6" component="div">
-                                        {moment(lesson.action_date).format('DD.MM.YYYY hh:ss')} (Мск) - {lesson.title}
-                                    </Typography>
-                                    {lesson.is_member &&
-                                        <Alert variant="outlined" severity="success">
-                                            Вы записаны
-                                        </Alert>
-                                    }
-                                    {lesson.is_member ?
-                                        <Button onClick={() => btnLeftClicked(lesson)} variant="contained"
-                                                size="medium">
-                                            Отписаться
-                                        </Button>
-                                        :
-                                        <Button onClick={() => btnJoinClicked(lesson)} variant="contained"
-                                                size="medium">
-                                            {lesson.is_free ?
-                                                <span>Записаться бесплатно</span>
-                                                :
-                                                invoice ?
-                                                    <span>Записаться (абонемент {invoice.ticket_count})</span>
-                                                    : <span>Записаться ({lesson.cost} руб.)</span>
-                                            }
-                                        </Button>
-                                    }
+                                    <Box display="flex" justifyContent="center" flexDirection="column">
+                                        <Typography gutterBottom variant="h6" component="div">
+                                            {moment(lesson.action_date).format('DD.MM.YYYY hh:ss')} (Мск)
+                                            - {lesson.title}
+                                        </Typography>
+                                        {lesson.is_member &&
+                                            <Alert variant="outlined" severity="success">
+                                                Вы записаны
+                                            </Alert>
+                                        }
+                                        {lesson.is_member ?
+                                            <Button onClick={() => btnLeftClicked(lesson)} variant="contained"
+                                                    size="medium">
+                                                Отписаться
+                                            </Button>
+                                            :
+                                            <Button onClick={() => btnJoinClicked(lesson)} variant="contained"
+                                                    size="medium">
+                                                {lesson.is_free ?
+                                                    <span>Записаться бесплатно</span>
+                                                    :
+                                                    invoice ?
+                                                        <span>Записаться (абонемент {invoice.ticket_count})</span>
+                                                        : <span>Записаться ({lesson.cost} руб.)</span>
+                                                }
+                                            </Button>
+                                        }
+                                    </Box>
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <Typography variant="body2">
@@ -106,6 +123,29 @@ const OnlineList = (props) => {
                     })}
                 </Box>
             }
+            <Accordion key="acc-abonement">
+                <AccordionSummary
+                    expandIcon={<ArrowDownwardIcon/>}
+                    aria-controls="panel1-content"
+                    id="abonement"
+                >
+                    <Box display="flex" justifyContent="center" flexDirection="column">
+                        <Typography gutterBottom variant="h6" component="div">
+                            🤸 Купить абонемент на 10 занятий
+                        </Typography>
+                        <Button onClick={btnAbonementClicked} variant="contained"
+                                size="medium">
+                            2700 руб (❿% скидка)
+                        </Button>
+                    </Box>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Typography variant="body2">
+                        ⭐️Планируете заниматься постоянно?
+                        🔥Экономьте на стоимости занятий, купив абонемент на посещение десяти online-занятий со скидка 10% 🔥
+                    </Typography>
+                </AccordionDetails>
+            </Accordion>
         </Box>
     );
 };
