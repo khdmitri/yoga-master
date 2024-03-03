@@ -52,10 +52,11 @@ export default function Home() {
     }
 
     const showPractise = (url) => {
-        tg?.openTelegramLink(url)
+        tg?.openLink(url)
     }
 
     const onClosedInvoice = (result) => {
+        setObj({...obj, tg_id: tg?.initDataUnsafe?.user?.id})
         tg?.MainButton.hide()
         const {url, status} = result
         setMsg(`Ваш платеж завершился со статусом: ${status}`)
