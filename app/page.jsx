@@ -53,10 +53,10 @@ export default function Home() {
 
     const showPractise = (url) => {
         tg?.openTelegramLink(url)
-        tg?.close()
     }
 
     const onClosedInvoice = (result) => {
+        tg?.MainButton.hide()
         const {url, status} = result
         setMsg(`Ваш платеж завершился со статусом: ${status}`)
         setSeverity("info")
@@ -64,7 +64,8 @@ export default function Home() {
         switch (status) {
             case "paid":
                 showPractise(targetLink)
-                router.refresh()
+                setNeedRefreshPractise(true)
+                setNeedRefreshOnline(true)
                 break
             case "cancelled":
                 setMsg("Платеж был отменен пользователем")
@@ -121,6 +122,9 @@ export default function Home() {
             }
             <Box>
                 {JSON.stringify(obj)}
+            </Box>
+            <Box>
+                TargetLink:{targetLink}
             </Box>
             <Box>
                 <SectionIntro/>
