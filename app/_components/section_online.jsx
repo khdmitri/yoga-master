@@ -59,7 +59,9 @@ const SectionOnline = (props) => {
                     </Box>
                     :
                     <OnlineList lessons={lessons} invoice={invoice} orderAction={orderAction}
-                                user_id={tg?.initDataUnsafe?.user?.id} needRefresh={needRefresh}/>
+                                user_id={tg?.initDataUnsafe?.user?.id} needRefresh={needRefresh}
+                                setNeedRefresh={setNeedRefresh}
+                    />
                 }
             </Container>
         </section>

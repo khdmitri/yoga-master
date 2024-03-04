@@ -12,7 +12,7 @@ import {useRouter} from "next/navigation";
 const URL = "https://t.me/yoga_master_mind_bot"
 
 const OnlineList = (props) => {
-    const {lessons, invoice, orderAction, user_id, needRefresh} = props
+    const {lessons, invoice, orderAction, user_id, needRefresh, setNeedRefresh} = props
     const [updatedLessons, setUpdatedLessons] = useState(lessons)
     const router = useRouter()
     const [obj, setObj] = useState({})
@@ -66,7 +66,7 @@ const OnlineList = (props) => {
             tg_id: user_id,
             media_id: lesson.id
         }).then(res => {
-            router.refresh()
+            setNeedRefresh(true)
         })
     }
 
