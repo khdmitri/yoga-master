@@ -99,7 +99,7 @@ const SectionPractise = (props) => {
 
 
     return (
-        <section className="section_practise" id="PRACTISE_ID">
+        <section id="PRACTISE_ID">
             <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color,}}>
                 <Box className="section-label-box" id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
                     {/*<Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>*/}
