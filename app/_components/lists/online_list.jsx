@@ -42,7 +42,7 @@ const OnlineList = (props) => {
     }, [needRefresh])
 
     const btnAbonementClicked = async () => {
-        orderAction(-1, URL, WEBAPP_ACTIONS.buy_abonement)
+        orderAction(1000, URL, WEBAPP_ACTIONS.buy_abonement)
     }
 
     const btnJoinClicked = async (lesson) => {
