@@ -43,6 +43,22 @@ const SectionCarousel = () => {
         }
     }, [])
 
+    const pictures = () => {
+        const arr = []
+        for (let i = 1; i <= 7; i++) {
+            arr.push(
+                <SwiperSlide tag="li" key={"photo_"+i.toString()}>
+                    <div className="shadowed-box">
+                        <Box display="flex" justifyContent="center">
+                            <Image src={"/carousel/"+i.toString()+".jpg"} alt="photo" width={photoSize[0]} height={photoSize[1]}/>
+                        </Box>
+                    </div>
+                </SwiperSlide>
+            )
+        }
+        return arr
+    }
+
     return (
         <Box display="flex" justifyContent="center">
             <Swiper
@@ -59,34 +75,7 @@ const SectionCarousel = () => {
                 // onSlideChange={() => console.log('slide change')}
                 wrapperTag="ul"
             >
-                <SwiperSlide tag="li" key="photo_1">
-                    <div className="shadowed-box">
-                        <Box display="flex" justifyContent="center">
-                            <Image src="/carousel/1.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
-                        </Box>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide tag="li" key="photo_2">
-                    <div className="shadowed-box">
-                        <Box display="flex" justifyContent="center">
-                            <Image src="/carousel/2.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
-                        </Box>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide tag="li" key="photo_3">
-                    <div className="shadowed-box">
-                        <Box display="flex" justifyContent="center">
-                            <Image src="/carousel/3.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
-                        </Box>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide tag="li" key="photo_4">
-                    <div className="shadowed-box">
-                        <Box display="flex" justifyContent="center">
-                            <Image src="/carousel/4.jpg" alt="photo" width={photoSize[0]} height={photoSize[1]}/>
-                        </Box>
-                    </div>
-                </SwiperSlide>
+                {pictures()}
             </Swiper>
         </Box>
     );
