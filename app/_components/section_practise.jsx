@@ -100,7 +100,7 @@ const SectionPractise = (props) => {
 
     return (
         <section id="PRACTISE_ID">
-            <Container sx={{backgroundColor: tg?.themeParams?.section_bg_color,}}>
+            <Container>
                 <Box className="section-label-box" id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
                     {/*<Image src="/labels/practises.png" alt="Курсы по йоге" width={300} height={100}/>*/}
                     <Typography variant="h6" color="#00008B"><strong>🧘 АВТОРСКИЕ КУРСЫ ПО ЙОГЕ 🧘</strong></Typography>
