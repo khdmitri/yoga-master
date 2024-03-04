@@ -9,6 +9,7 @@ import {WEBAPP_ACTIONS} from "../../../lib/constants";
 import PractiseAPI from "../../../lib/practise";
 import {useRouter} from "next/navigation";
 import AlertLoading from "../alert/alert_loading";
+import Link from "next/link";
 
 const URL = "https://t.me/yoga_master_mind_bot"
 
@@ -96,7 +97,7 @@ const OnlineList = (props) => {
 
     return (
         <Box>
-            <AlertLoading open={isLoading} />
+            <AlertLoading open={isLoading}/>
             {updatedLessons && Array.isArray(updatedLessons) &&
                 <Box>
                     {updatedLessons.map(lesson => {
@@ -110,7 +111,7 @@ const OnlineList = (props) => {
                                     <Box display="flex" justifyContent="center" flexDirection="column">
                                         <Typography gutterBottom variant="h6" component="div">
                                             {moment(lesson.action_date).format('DD.MM.YYYY hh:ss')} (Мск)
-                                            - {lesson.title} - {lesson.is_member}
+                                            - {lesson.title}
                                         </Typography>
                                         {lesson.is_member &&
                                             <Alert variant="outlined" severity="success">
@@ -137,9 +138,17 @@ const OnlineList = (props) => {
                                     </Box>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    <Typography variant="body2">
-                                        {lesson.description}
-                                    </Typography>
+                                    <Box display="flex" flexDirection="column" justifyContent="center">
+                                        {lesson.is_member &&
+                                            lesson.stream_link ?
+                                            <Link href={lesson.stream_link}>Переходите на stream по этой ссылке</Link>
+                                            :
+                                            <Link href={URL}>Переходите в нашего бота, перед началом занятия мы опубликуем для вас ссылку на stream</Link>
+                                        }
+                                        <Typography variant="body2">
+                                            {lesson.description}
+                                        </Typography>
+                                    </Box>
                                 </AccordionDetails>
                             </Accordion>
                         )
