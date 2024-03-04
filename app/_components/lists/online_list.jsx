@@ -12,31 +12,30 @@ import {useRouter} from "next/navigation";
 const URL = "https://t.me/yoga_master_mind_bot"
 
 const OnlineList = (props) => {
-    const {lessons, invoice, orderAction, user_id} = props
+    const {lessons, invoice, orderAction, user_id, needRefresh} = props
     const [updatedLessons, setUpdatedLessons] = useState(lessons)
     const router = useRouter()
+    const [obj, setObj] = useState({})
 
     useEffect(() => {
-        const update_lessons = async () => {
-            if (lessons) {
-                const updated_lessons = await Promise.all(lessons.map(async (lesson) => {
-                    const group = await PractiseAPI.is_group_member({
-                        tg_id: user_id ? user_id : -1,
-                        media_id: lesson.id
-                    })
-                    lesson.is_member = !!group.data
-                    return lesson
-                }))
-                setUpdatedLessons(updated_lessons)
-            } else
-                return []
+        if (needRefresh) {
+            const update_lessons = async () => {
+                if (lessons) {
+                    const updated_lessons = await Promise.all(lessons.map(async (lesson) => {
+                        const group = await PractiseAPI.is_group_member({
+                            tg_id: user_id ? user_id : -1,
+                            media_id: lesson.id
+                        })
+                        lesson.is_member = !!group.data
+                        return lesson
+                    }))
+                    setUpdatedLessons(updated_lessons)
+                } else
+                    return []
+            }
+            update_lessons()
         }
-        update_lessons()
-    }, [])
-
-    useEffect(() => {
-        console.log("UpdatedLessons=", updatedLessons)
-    }, [updatedLessons])
+    }, [needRefresh])
 
     const btnAbonementClicked = async () => {
         orderAction(-1, URL, WEBAPP_ACTIONS.buy_abonement)
@@ -85,7 +84,7 @@ const OnlineList = (props) => {
                                     <Box display="flex" justifyContent="center" flexDirection="column">
                                         <Typography gutterBottom variant="h6" component="div">
                                             {moment(lesson.action_date).format('DD.MM.YYYY hh:ss')} (Мск)
-                                            - {lesson.title}
+                                            - {lesson.title} - {lesson.is_member}
                                         </Typography>
                                         {lesson.is_member &&
                                             <Alert variant="outlined" severity="success">
@@ -140,7 +139,8 @@ const OnlineList = (props) => {
                 <AccordionDetails>
                     <Typography variant="body2">
                         ⭐️Планируете заниматься постоянно?
-                        🔥Экономьте на стоимости занятий, купив абонемент на посещение десяти online-занятий со скидка 10% 🔥
+                        🔥Экономьте на стоимости занятий, купив абонемент на посещение десяти online-занятий со скидка
+                        10% 🔥
                     </Typography>
                 </AccordionDetails>
             </Accordion>

@@ -12,6 +12,7 @@ import {WEBAPP_ACTIONS} from "../lib/constants";
 import {useRouter} from "next/navigation";
 import SectionPractise from "./_components/section_practise";
 import SectionFooter from "./_components/section_footer";
+import AlertShowUrl from "./_components/alert/alert_show_url";
 
 function SellIcon() {
     return null;
@@ -27,7 +28,7 @@ export default function Home() {
     const [needRefreshPractise, setNeedRefreshPractise] = useState(true)
     const [needRefreshOnline, setNeedRefreshOnline] = useState(true)
     const [obj, setObj] = useState({})
-    const router = useRouter()
+    const [isShowContent, setIsShowContent] = useState(false)
 
     const orderAction = (order_id, url, action) => {
         const data_to_send = {
@@ -51,11 +52,6 @@ export default function Home() {
         })
     }
 
-    const showPractise = (url) => {
-        tg?.openLink(url)
-        tg?.openTelegramLink(url)
-    }
-
     const onClosedInvoice = (result) => {
         setObj({...obj, tg_id: tg?.initDataUnsafe?.user?.id})
         setSendData({action: -1, user_id: -1, order_id: -1})
@@ -65,7 +61,7 @@ export default function Home() {
         setIsShowAlert(true)
         switch (status) {
             case "paid":
-                showPractise(targetLink)
+                setIsShowContent(true)
                 setNeedRefreshPractise(true)
                 setNeedRefreshOnline(true)
                 break
@@ -120,6 +116,9 @@ export default function Home() {
 
     return (
         <>
+            {isShowContent &&
+                <AlertShowUrl tg={tg} initOpen={true} url={targetLink} />
+            }
             {isShowAlert &&
                 <UniAlert severity={severity}>
                     {msg}
