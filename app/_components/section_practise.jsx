@@ -116,7 +116,7 @@ const SectionPractise = (props) => {
                             <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
                                 <Card sx={{
                                     maxWidth: windowSize[0],
-                                    backgroundColor: "beige",
+                                    backgroundColor: "#CBA276",
                                     boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;"
                                 }}
                                       ref={cardRef}>

@@ -96,7 +96,7 @@ const OnlineList = (props) => {
                 <Box>
                     {updatedLessons.map(lesson => {
                         return (
-                            <Accordion key={lesson.id}>
+                            <Accordion key={lesson.id} sx={{backgroundColor: "#E7D6B9"}}>
                                 <AccordionSummary
                                     expandIcon={<ArrowDownwardIcon/>}
                                     aria-controls="panel1-content"
@@ -154,7 +154,7 @@ const OnlineList = (props) => {
                     })}
                 </Box>
             }
-            <Accordion key="acc-abonement">
+            <Accordion key="acc-abonement" sx={{backgroundColor: "#E7D6B9"}}>
                 <AccordionSummary
                     expandIcon={<ArrowDownwardIcon/>}
                     aria-controls="panel1-content"
