@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import {WEBAPP_ACTIONS} from "../../../lib/constants";
 import PractiseAPI from "../../../lib/practise";
 import {useRouter} from "next/navigation";
+import AlertLoading from "../alert/alert_loading";
 
 const URL = "https://t.me/yoga_master_mind_bot"
 
@@ -16,6 +17,7 @@ const OnlineList = (props) => {
     const [updatedLessons, setUpdatedLessons] = useState(null)
     const router = useRouter()
     const [obj, setObj] = useState({})
+    const [isLoading, setIsLoading] = useState(false)
 
     const update_lessons = async () => {
         if (lessons) {
@@ -49,6 +51,7 @@ const OnlineList = (props) => {
     }
 
     const btnJoinClicked = async (lesson) => {
+        setIsLoading(true)
         if (lesson.is_free) {
             // console.log("Lesson is free. Join user to lesson")
             await PractiseAPI.join_group_online({
@@ -56,6 +59,9 @@ const OnlineList = (props) => {
                 media_id: lesson.id
             }).then(res => {
                 setNeedRefresh(true)
+                setIsLoading(false)
+            }).catch(error => {
+                setIsLoading(false)
             })
         } else if (invoice) {
             // console.log("Abonement is valid. Join user to lesson using abonement")
@@ -64,6 +70,9 @@ const OnlineList = (props) => {
                 media_id: lesson.id
             }).then(res => {
                 setNeedRefresh(true)
+                setIsLoading(false)
+            }).catch(error => {
+                setIsLoading(false)
             })
         } else {
             // console.log("Buy lesson")
@@ -72,16 +81,21 @@ const OnlineList = (props) => {
     }
 
     const btnLeftClicked = async (lesson) => {
+        setIsLoading(true)
         await PractiseAPI.leave_group({
             tg_id: user_id,
             media_id: lesson.id
         }).then(res => {
             setNeedRefresh(true)
+            setIsLoading(false)
+        }).catch(error => {
+            setIsLoading(false)
         })
     }
 
     return (
         <Box>
+            <AlertLoading open={isLoading} />
             {updatedLessons && Array.isArray(updatedLessons) &&
                 <Box>
                     {updatedLessons.map(lesson => {
