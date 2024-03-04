@@ -17,23 +17,28 @@ const OnlineList = (props) => {
     const router = useRouter()
     const [obj, setObj] = useState({})
 
+    const update_lessons = async () => {
+        if (lessons) {
+            const updated_lessons = await Promise.all(lessons.map(async (lesson) => {
+                await PractiseAPI.is_group_member({
+                    tg_id: user_id ? user_id : -1,
+                    media_id: lesson.id
+                }).then(member => {
+                    lesson.is_member = !!member.data
+                    return lesson
+                })
+            }))
+            setUpdatedLessons(updated_lessons)
+        } else
+            return []
+    }
+
+    useEffect(() => {
+        update_lessons()
+    }, [])
+
     useEffect(() => {
         if (needRefresh) {
-            const update_lessons = async () => {
-                if (lessons) {
-                    const updated_lessons = await Promise.all(lessons.map(async (lesson) => {
-                        await PractiseAPI.is_group_member({
-                            tg_id: user_id ? user_id : -1,
-                            media_id: lesson.id
-                        }).then(member => {
-                            lesson.is_member = !!member.data
-                            return lesson
-                        })
-                    }))
-                    setUpdatedLessons(updated_lessons)
-                } else
-                    return []
-            }
             update_lessons()
         }
     }, [needRefresh])
@@ -48,12 +53,16 @@ const OnlineList = (props) => {
             await PractiseAPI.join_group_online({
                 tg_id: user_id,
                 media_id: lesson.id
+            }).then(res => {
+                setNeedRefresh(true)
             })
         } else if (invoice) {
             // console.log("Abonement is valid. Join user to lesson using abonement")
             await PractiseAPI.join_group_online({
                 tg_id: user_id,
                 media_id: lesson.id
+            }).then(res => {
+                setNeedRefresh(true)
             })
         } else {
             // console.log("Buy lesson")
