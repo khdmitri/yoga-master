@@ -51,8 +51,8 @@ const OnlineList = (props) => {
     }
 
     const btnJoinClicked = async (lesson) => {
-        setIsLoading(true)
         if (lesson.is_free) {
+            setIsLoading(true)
             // console.log("Lesson is free. Join user to lesson")
             await PractiseAPI.join_group_online({
                 tg_id: user_id,
@@ -64,6 +64,7 @@ const OnlineList = (props) => {
                 setIsLoading(false)
             })
         } else if (invoice) {
+            setIsLoading(true)
             // console.log("Abonement is valid. Join user to lesson using abonement")
             await PractiseAPI.join_group_online({
                 tg_id: user_id,
