@@ -85,7 +85,7 @@ export default function Home() {
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp
-        console.log("Telegram:", window.Telegram)
+        // console.log("Telegram:", window.Telegram)
         if (tg) {
             tg.ready()
             tg.expand()
@@ -122,12 +122,6 @@ export default function Home() {
                     {msg}
                 </UniAlert>
             }
-            <Box>
-                {JSON.stringify(obj)}
-            </Box>
-            <Box>
-                TargetLink:{targetLink}
-            </Box>
             <Box>
                 <SectionIntro/>
                 <SectionCarousel/>

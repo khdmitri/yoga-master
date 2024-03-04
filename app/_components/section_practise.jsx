@@ -51,7 +51,7 @@ const SectionPractise = (props) => {
     }
 
     const getPractiseList = async () => {
-        console.log("Try to get practise list")
+        // console.log("Try to get practise list")
         setIsLoading(true)
         await PractiseAPI.get_practises().then(async (result) => {
                 const practises = await Promise.all(result.data.map(async (practise) => {
@@ -59,12 +59,12 @@ const SectionPractise = (props) => {
                     practise.is_paid = !!r
                     return practise
                 }))
-                console.log("practises=", practises)
+                // console.log("practises=", practises)
                 setPractiseList(practises)
                 setIsLoading(false)
             }
         ).catch(error => {
-            console.log(error)
+            // console.log(error)
             setIsLoading(false)
         })
     }
@@ -77,11 +77,6 @@ const SectionPractise = (props) => {
     }, [tg, needRefresh])
 
     useEffect(() => {
-        console.log("PractiseList=", practiseList)
-    }, [practiseList])
-
-    useEffect(() => {
-
         setWindowSize([
             window.innerWidth,
             window.innerHeight,

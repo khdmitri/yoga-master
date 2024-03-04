@@ -20,7 +20,7 @@ const SectionOnline = (props) => {
                 setLessons(result.data)
                 setIsLoading(false)
             }).catch(error => {
-                console.log(error)
+                // console.log(error)
                 setIsLoading(false)
             })
         }
@@ -46,9 +46,6 @@ const SectionOnline = (props) => {
     return (
         <section className="section_online" id="ONLINE_ID">
             <Container>
-                <Box>
-                    Invoice: {invoice?.id}
-                </Box>
                 <Box className="section-label-box" id="courses" display="flex" justifyContent="center" sx={{paddingTop: 3, paddingBottom: 3}}>
                     <Typography variant="h6" color="#00008B"><strong>ЗАПИСАТЬСЯ НА ONLINE-УРОК 👇</strong></Typography>
                 </Box>

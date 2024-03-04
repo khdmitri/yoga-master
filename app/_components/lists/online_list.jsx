@@ -16,8 +16,6 @@ const URL = "https://t.me/yoga_master_mind_bot"
 const OnlineList = (props) => {
     const {lessons, invoice, orderAction, user_id, needRefresh, setNeedRefresh} = props
     const [updatedLessons, setUpdatedLessons] = useState(null)
-    const router = useRouter()
-    const [obj, setObj] = useState({})
     const [isLoading, setIsLoading] = useState(false)
 
     const update_lessons = async () => {
@@ -27,10 +25,10 @@ const OnlineList = (props) => {
                     tg_id: user_id ? user_id : -1,
                     media_id: lesson.id
                 }).then(member => {
-                    console.log(member)
+                    // console.log(member)
                     lesson.is_member = !!member.data
                 }).catch(error => {
-                    console.log("Error is_group_member: ", error)
+                    // console.log("Error is_group_member: ", error)
                 })
                 return lesson
             }))
@@ -42,10 +40,6 @@ const OnlineList = (props) => {
     useEffect(() => {
         update_lessons()
     }, [needRefresh])
-
-    useEffect(() => {
-        console.log("UpdatedLessons=", updatedLessons)
-    }, [updatedLessons])
 
     const btnAbonementClicked = async () => {
         orderAction(-1, URL, WEBAPP_ACTIONS.buy_abonement)
