@@ -132,21 +132,22 @@ const OnlineList = (props) => {
                                     </Box>
                                 </AccordionSummary>
                                 <AccordionDetails>
-                                    {/*<Box display="flex" flexDirection="column" justifyContent="center">*/}
-                                    {/*    {lesson.is_member &&*/}
-                                    {/*        <>*/}
-                                    {/*            lesson.stream_link ?*/}
-                                    {/*            <Link href={lesson.stream_link}>Переходите на stream по этой*/}
-                                    {/*                ссылке</Link>*/}
-                                    {/*            :*/}
-                                    {/*            <Link href={URL}>Переходите в нашего бота, перед началом занятия мы*/}
-                                    {/*                опубликуем для вас ссылку на stream</Link>*/}
-                                    {/*        </>*/}
-                                    {/*    }*/}
-                                    {/*    <Typography variant="body2">*/}
-                                    {/*        {lesson.description}*/}
-                                    {/*    </Typography>*/}
-                                    {/*</Box>*/}
+                                    <Box display="flex" flexDirection="column" justifyContent="center">
+                                        {lesson.is_member &&
+                                            <>
+                                                {lesson.stream_link ?
+                                                    <Link href={lesson.stream_link}>Переходите на stream по этой
+                                                        ссылке</Link>
+                                                    :
+                                                    <Link href={URL}>Переходите в нашего бота, перед началом занятия мы
+                                                        опубликуем для вас ссылку на stream</Link>
+                                                }
+                                            </>
+                                        }
+                                        <Typography variant="body2">
+                                            {lesson.description}
+                                        </Typography>
+                                    </Box>
                                 </AccordionDetails>
                             </Accordion>
                         )
