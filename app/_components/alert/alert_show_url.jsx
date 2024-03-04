@@ -3,12 +3,11 @@ import React from 'react';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import Button from "@mui/material/Button";
 
-const AlertShowUrl = ({initOpen, url, tg}) => {
-    const [open, setOpen] = React.useState(initOpen);
-
+const AlertShowUrl = ({open, setOpen, url, tg}) => {
     const handleClose = () => {
-        tg?.openTelegramLink(url)
         setOpen(false);
+        tg?.openTelegramLink(url)
+        tg?.close()
     };
 
     return (

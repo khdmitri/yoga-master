@@ -116,9 +116,7 @@ export default function Home() {
 
     return (
         <>
-            {isShowContent &&
-                <AlertShowUrl tg={tg} initOpen={true} url={targetLink} />
-            }
+            <AlertShowUrl tg={tg} open={isShowContent} setOpen={setIsShowContent} url={targetLink} />
             {isShowAlert &&
                 <UniAlert severity={severity}>
                     {msg}

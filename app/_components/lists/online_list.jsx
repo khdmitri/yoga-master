@@ -22,12 +22,13 @@ const OnlineList = (props) => {
             const update_lessons = async () => {
                 if (lessons) {
                     const updated_lessons = await Promise.all(lessons.map(async (lesson) => {
-                        const group = await PractiseAPI.is_group_member({
+                        await PractiseAPI.is_group_member({
                             tg_id: user_id ? user_id : -1,
                             media_id: lesson.id
+                        }).then(member => {
+                            lesson.is_member = !!member.data
+                            return lesson
                         })
-                        lesson.is_member = !!group.data
-                        return lesson
                     }))
                     setUpdatedLessons(updated_lessons)
                 } else
