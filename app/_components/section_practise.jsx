@@ -116,8 +116,10 @@ const SectionPractise = (props) => {
                             <Grid item xs={12} md={6} display="flex" justifyContent="center" key={practise.id}>
                                 <Card sx={{
                                     maxWidth: windowSize[0],
-                                    backgroundColor: "#CBA276",
-                                    boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;"
+                                    background: "rgba(203, 162, 118, 0.35)",
+                                    // backgroundColor: "#CBA276",
+                                    boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;",
+                                    zIndex: -1
                                 }}
                                       ref={cardRef}>
                                     <YoutubeEmbed embedId={practise.file_resource_link}
@@ -147,7 +149,7 @@ const SectionPractise = (props) => {
                                     </CardContent>
                                     <CardActions>
                                         <Grid container spacing={2} display="flex" justifyContent="space-between">
-                                            <Grid item xs={12} display="flex" justifyContent="space-between">
+                                            <Grid item xs={12} display="flex" justifyContent="space-between" sx={{margin: 2}}>
                                                 {practise.is_paid ?
                                                     <Button variant="contained" size="medium"
                                                             onClick={() => showPractise(practise.channel_resource_link)}>
