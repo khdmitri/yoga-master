@@ -25,7 +25,7 @@ const SectionFooter = (props) => {
                         <Button variant="outlined" startIcon={<YouTubeIcon/>} sx={{color: "red", borderColor: "red"}}
                                 onClick={() => redirect_to("https://www.youtube.com/@mindmaster6776")}
                         >
-                            Youtube
+                            YouTube
                         </Button>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3} display="flex" justifyContent="center">
