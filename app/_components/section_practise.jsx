@@ -118,8 +118,7 @@ const SectionPractise = (props) => {
                                     maxWidth: windowSize[0],
                                     background: "rgba(203, 162, 118, 0.35)",
                                     // backgroundColor: "#CBA276",
-                                    boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;",
-                                    zIndex: -1
+                                    boxShadow: "rgba(0, 0, 0, 0.45) 0 5px 8px;"
                                 }}
                                       ref={cardRef}>
                                     <YoutubeEmbed embedId={practise.file_resource_link}
