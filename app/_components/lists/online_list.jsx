@@ -104,7 +104,7 @@ const OnlineList = (props) => {
                                 >
                                     <Box display="flex" justifyContent="center" flexDirection="column">
                                         <Typography gutterBottom variant="h6" component="div">
-                                            {moment(lesson.action_date).format('DD.MM.YYYY hh:ss')} (Мск)
+                                            {moment(lesson.action_date).format('DD.MM.YYYY HH:ss')} (Мск)
                                             - {lesson.title}
                                         </Typography>
                                         {lesson.is_member &&
