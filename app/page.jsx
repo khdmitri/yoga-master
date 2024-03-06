@@ -123,7 +123,7 @@ export default function Home() {
                 </UniAlert>
             }
             <Box>
-                <SectionIntro/>
+                <SectionIntro tg={tg}/>
                 <SectionCarousel/>
                 <SectionPractise setMsg={setMsg} setSeverity={setSeverity}
                                  setIsShowAlert={setIsShowAlert} tg={tg} orderAction={orderAction}

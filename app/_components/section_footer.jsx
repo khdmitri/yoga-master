@@ -25,14 +25,21 @@ const SectionFooter = (props) => {
                         <Button variant="outlined" startIcon={<YouTubeIcon/>} sx={{color: "red", borderColor: "red"}}
                                 onClick={() => redirect_to("https://www.youtube.com/@mindmaster6776")}
                         >
-                            @mindmaster6776
+                            Youtube
                         </Button>
                     </Grid>
                     <Grid item xs={12} md={6} lg={3} display="flex" justifyContent="center">
                         <Button variant="outlined" startIcon={<TelegramIcon/>}
                                 onClick={() => redirect_to("https://t.me/yoga_master_mind")}
                         >
-                            yoga_master_mind
+                            Telegram-Канал
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} md={6} lg={3} display="flex" justifyContent="center">
+                        <Button variant="outlined" startIcon={<TelegramIcon/>}
+                                onClick={() => redirect_to("https://t.me/yoga_master_mind_bot")}
+                        >
+                            Telegram-Бот
                         </Button>
                     </Grid>
                 </Grid>
