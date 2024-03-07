@@ -141,7 +141,7 @@ const SectionPractise = (props) => {
                                             <AccordionDetails>
                                                 <Typography variant="body2"
                                                             color={tg ? tg?.themeParams?.text_color : "text.secondary"}>
-                                                    {practise.description}
+                                                    <div dangerouslySetInnerHTML={{__html: practise.description.replaceAll("\n", "<br />")}} />
                                                 </Typography>
                                             </AccordionDetails>
                                         </Accordion>
