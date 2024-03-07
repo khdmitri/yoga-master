@@ -165,3 +165,8 @@ button {
     display: none;
     visibility: hidden;
 }
+
+.yandexFrame {
+    position:absolute;
+    left:-9999px;
+}
