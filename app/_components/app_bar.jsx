@@ -50,6 +50,7 @@ function ResponsiveAppBar() {
 
     const handleMenuClick = (url) => {
         router.push(url)
+        handleCloseNavMenu()
     }
 
     return (
