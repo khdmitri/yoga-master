@@ -33,16 +33,15 @@ export default function RootLayout({
         <html lang="en">
         <head>
             <script src="https://telegram.org/js/telegram-web-app.js" async/>
-            <script src="../lib/google" async />
-            <script type="text/javascript" src="../lib/yandex" async />
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-M2KFCP97FT"></script>
+            <script src="../lib/google" async/>
+            <script type="text/javascript" src="../lib/yandex" async/>
         </head>
         <CssBaseline/>
         <body className={inter.className}>
         <noscript>
-            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5M9KN8PW"
-                    height="0" width="0" className="googleFrame"></iframe>
+            <div><img src="https://mc.yandex.ru/watch/96678041" className="yandexFrame" alt=""/></div>
         </noscript>
-        <noscript><div><img src="https://mc.yandex.ru/watch/96678041" className="yandexFrame" alt="" /></div></noscript>
         <ResponsiveAppBar/>
         {children}
         </body>

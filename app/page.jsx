@@ -1,5 +1,4 @@
 "use client"
-import dynamic from "next/dynamic";
 import "./page.module.css";
 import SectionIntro from "./_components/section_intro";
 import SectionCarousel from "./_components/section_carousel";
@@ -8,8 +7,6 @@ import React, {useEffect, useState} from "react";
 import PractiseAPI from "../lib/practise";
 import UniAlert from "./_components/alert/alert";
 import SectionOnline from "./_components/section_online";
-import {WEBAPP_ACTIONS} from "../lib/constants";
-import {useRouter} from "next/navigation";
 import SectionPractise from "./_components/section_practise";
 import SectionFooter from "./_components/section_footer";
 import AlertShowUrl from "./_components/alert/alert_show_url";
