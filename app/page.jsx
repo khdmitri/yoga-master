@@ -81,6 +81,16 @@ export default function Home() {
     }
 
     useEffect(() => {
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-M2KFCP97FT');
+
         const tg = window.Telegram?.WebApp
         // console.log("Telegram:", window.Telegram)
         if (tg) {
@@ -113,7 +123,7 @@ export default function Home() {
 
     return (
         <>
-            <AlertShowUrl tg={tg} open={isShowContent} setOpen={setIsShowContent} url={targetLink} />
+            <AlertShowUrl tg={tg} open={isShowContent} setOpen={setIsShowContent} url={targetLink}/>
             {isShowAlert &&
                 <UniAlert severity={severity}>
                     {msg}
@@ -130,7 +140,7 @@ export default function Home() {
                                setIsShowAlert={setIsShowAlert} tg={tg} orderAction={orderAction}
                                needRefresh={needRefreshOnline} setNeedRefresh={setNeedRefreshOnline}
                 />
-                <SectionFooter tg={tg} />
+                <SectionFooter tg={tg}/>
             </Box>
         </>
     );

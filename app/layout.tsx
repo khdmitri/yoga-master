@@ -34,7 +34,7 @@ export default function RootLayout({
         <head>
             <script src="https://telegram.org/js/telegram-web-app.js" async/>
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-M2KFCP97FT"></script>
-            <script src="../lib/google" async/>
+            {/*<script src="../lib/google" async/>*/}
             <script type="text/javascript" src="../lib/yandex" async/>
         </head>
         <CssBaseline/>
